@@ -1,19 +1,15 @@
-import { DataTypes } from "sequelize";
-import db from "../db/connection";
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../config/db');
 
-const Cliente = db.define('clientes', {
-  id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true
-  },
+const Cliente = sequelize.define('Cliente', {
   t_documento: {
     type: DataTypes.STRING,
     allowNull: false
   },
   n_documento: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true
   },
   nombres: {
     type: DataTypes.STRING,
@@ -25,11 +21,13 @@ const Cliente = db.define('clientes', {
   },
   email: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true
   },
   celular: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true
   },
   direccion: {
     type: DataTypes.STRING,
@@ -40,12 +38,8 @@ const Cliente = db.define('clientes', {
     defaultValue: 0
   }
 }, {
-  indexes: [
-    { fields: ['n_documento'] },
-    { fields: ['email'] },
-    { fields: ['celular'] }
-  ],
-  timestamps: false
+  timestamps: false,
+  tableName: 'clientes'
 });
 
-export default Cliente;
+module.exports = Cliente;

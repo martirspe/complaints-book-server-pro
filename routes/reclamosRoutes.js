@@ -1,23 +1,18 @@
 const express = require('express');
-const reclamosController = require('../controllers/reclamosController');
+const {
+  createReclamo,
+  getReclamos,
+  getReclamoById,
+  updateReclamo,
+  deleteReclamo
+} = require('../controllers/reclamosController');
+
 const router = express.Router();
 
-// Crear reclamo
-router.post('/', reclamosController.crearReclamo);
-
-// Obtener todos los reclamos
-router.get('/', reclamosController.obtenerReclamos);
-
-// Obtener reclamos por ID
-router.get('/:id', reclamosController.obtenerReclamosPorID);
-
-// Actualizar reclamo por ID
-router.put('/:id', reclamosController.actualizarReclamo);
-
-// Asignar reclamo a personal
-router.patch('/:id/asignar', reclamosController.asignarReclamo);
-
-// Registrar resolución de un reclamo
-router.patch('/:id/resolver', reclamosController.resolverReclamo);
+router.post('/reclamos', createReclamo);
+router.get('/reclamos', getReclamos);
+router.get('/reclamos/:id', getReclamoById);
+router.put('/reclamos/:id', updateReclamo);
+router.delete('/reclamos/:id', deleteReclamo);
 
 module.exports = router;

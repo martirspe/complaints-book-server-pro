@@ -1,19 +1,15 @@
-import { DataTypes } from "sequelize";
-import db from "../db/connection";
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../config/db');
 
-const Tutor = db.define('tutores', {
-  id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true
-  },
+const Tutor = sequelize.define('Tutor', {
   t_documento: {
     type: DataTypes.STRING,
     allowNull: false
   },
   n_documento: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true
   },
   nombres: {
     type: DataTypes.STRING,
@@ -25,14 +21,17 @@ const Tutor = db.define('tutores', {
   },
   email: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true
   },
   celular: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true
   }
 }, {
-  timestamps: false
+  timestamps: false,
+  tableName: 'tutores'
 });
 
-export default Tutor;
+module.exports = Tutor;

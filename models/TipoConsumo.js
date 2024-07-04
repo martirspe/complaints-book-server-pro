@@ -1,18 +1,14 @@
-import { DataTypes } from "sequelize";
-import db from "../db/connection";
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../config/db');
 
-const TipoConsumo = db.define('tipos_consumo', {
-  id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true
-  },
+const TipoConsumo = sequelize.define('TipoConsumo', {
   nombre: {
     type: DataTypes.STRING,
     allowNull: false
   }
 }, {
-  timestamps: false
+  timestamps: false,
+  tableName: 'tipos_consumo'
 });
 
-export default TipoConsumo;
+module.exports = TipoConsumo;
