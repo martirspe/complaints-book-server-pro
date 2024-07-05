@@ -3,6 +3,7 @@ const Cliente = require('../models/Cliente');
 const Tutor = require('../models/Tutor');
 const TipoReclamo = require('../models/TipoReclamo');
 const TipoConsumo = require('../models/TipoConsumo');
+const sendEmail = require('../services/emailService');
 
 exports.createReclamo = async (req, res) => {
   try {
@@ -37,6 +38,23 @@ exports.createReclamo = async (req, res) => {
       tipo_consumo_id,
       ...reclamoData
     });
+
+    // Enviar correo al crear un reclamo
+    await sendEmail(
+      cliente.email,
+      'Nuevo Reclamo Registrado',
+      `Hola ${cliente.nombres}, se ha registrado su reclamo con ID ${reclamo.id}.`,
+      'nuevoReclamo',
+      {
+        nombreCliente: cliente.nombres,
+        apellidoCliente: cliente.apellidos,
+        idReclamo: reclamo.id,
+        tipoReclamo: tipoReclamo.nombre,
+        tipoConsumo: tipoConsumo.nombre,
+        descripcionReclamo: reclamo.descripcion,
+        fechaCreacion: reclamo.fecha_creacion
+      }
+    );
 
     res.status(201).json(reclamo);
   } catch (error) {
@@ -106,5 +124,44 @@ exports.deleteReclamo = async (req, res) => {
     throw new Error("Reclamo no encontrado");
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+
+exports.assignReclamo = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { asignadoA } = req.body;
+
+    const reclamo = await Reclamo.findByPk(id);
+    if (!reclamo) {
+      return res.status(404).json({ message: 'Reclamo no encontrado' });
+    }
+
+    reclamo.asignadoA = asignadoA;
+    await reclamo.save();
+
+    res.status(200).json(reclamo);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+exports.resolveReclamo = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { resolucion, resuelto } = req.body;
+
+    const reclamo = await Reclamo.findByPk(id);
+    if (!reclamo) {
+      return res.status(404).json({ message: 'Reclamo no encontrado' });
+    }
+
+    reclamo.resolucion = resolucion;
+    reclamo.resuelto = resuelto;
+    await reclamo.save();
+
+    res.status(200).json(reclamo);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
 };

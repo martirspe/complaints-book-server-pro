@@ -34,8 +34,8 @@ const Cliente = sequelize.define('Cliente', {
     allowNull: false
   },
   m_edad: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0
+    type: DataTypes.BOOLEAN,
+    defaultValue: true
   }
 }, {
   timestamps: false,

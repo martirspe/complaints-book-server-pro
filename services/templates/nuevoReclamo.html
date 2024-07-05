@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuevo Reclamo Registrado</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        h2 {
+            color: #333;
+        }
+        p {
+            margin-bottom: 10px;
+        }
+        .reclamo-details {
+            margin-top: 20px;
+            background-color: #fff;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .reclamo-details h3 {
+            color: #555;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .reclamo-details p {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Hola {{nombreCliente}},</h2>
+        <p>Se ha registrado su reclamo con ID <strong>{{idReclamo}}</strong>.</p>
+        <div class="reclamo-details">
+            <h3>Detalles del Reclamo:</h3>
+            <p><strong>Cliente:</strong> {{nombreCliente}} {{apellidoCliente}}</p>
+            <p><strong>Tipo de Reclamo:</strong> {{tipoReclamo}}</p>
+            <p><strong>Tipo de Consumo:</strong> {{tipoConsumo}}</p>
+            <p><strong>Descripción:</strong></p>
+            <p>{{descripcionReclamo}}</p>
+            <p><strong>Fecha de Registro:</strong> {{fechaCreacion}}</p>
+        </div>
+    </div>
+</body>
+</html>
