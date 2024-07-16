@@ -1,7 +1,6 @@
-```markdown
-# API REST de un Libro de Reclamaciones
+# API REST de Libro de Reclamaciones
 
-Este proyecto es un API REST de un Libro de Reclamaciones para una tienda, implementado utilizando Node.js, Sequelize y Express.
+Este proyecto es una API REST para la gestión de un Libro de Reclamaciones, diseñada para ser adaptable a cualquier sector comercial. Implementada con tecnologías modernas como Node.js, Sequelize y Express, esta API proporciona una solución robusta y escalable para administrar reclamos de clientes de manera eficiente.
 
 ## Características
 
@@ -28,8 +27,8 @@ Este proyecto es un API REST de un Libro de Reclamaciones para una tienda, imple
 1. Clona el repositorio
 
 ```bash
-git clone https://github.com/tuusuario/sistema-gestion-reclamos.git
-cd sistema-gestion-reclamos
+git clone https://github.com/martirspe/complaints-book-server-pro.git
+cd complaints-book-server-pro
 ```
 
 2. Instala las dependencias
@@ -66,12 +65,15 @@ npx sequelize-cli db:migrate
 ```plaintext
 PORT=3000
 DB_HOST=localhost
-DB_NAME=nombre_base_de_datos
+DB_NAME=nombre_base_de_datos   
 DB_USER=usuario
-DB_PASS=contraseña
-EMAIL_SERVICE=gmail
-EMAIL_USER=tu_email@gmail.com
-EMAIL_PASS=tu_contraseña_de_email
+DB_PASSWORD=contraseña
+EMAIL_HOST=mail.example.com
+EMAIL_PORT=465
+EMAIL_SECURE=true
+EMAIL_USER=test@example.com
+EMAIL_PASSWORD=contraseña
+JWT_SECRET=your_jwt_secret
 ```
 
 ## Ejecución
@@ -86,9 +88,265 @@ El servidor se ejecutará en `http://localhost:3000`.
 
 ## Uso
 
-### Crear un Reclamo
+### API Endpoints
 
-Envía una solicitud POST a `http://localhost:3000/api/reclamos` con el siguiente cuerpo:
+#### Clientes
+
+##### Crear Cliente
+
+- **URL**: `/api/clientes`
+- **Método**: `POST`
+- **Cuerpo**:
+
+```json
+{
+  "t_documento_id": 1,
+  "n_documento": "12345678",
+  "nombres": "Juan",
+  "apellidos": "Perez",
+  "email": "juan.perez@example.com",
+  "celular": "987654321",
+  "direccion": "Avenida Las Américas 145",
+  "m_edad": true
+}
+```
+
+##### Obtener Todos los Clientes
+
+- **URL**: `/api/clientes`
+- **Método**: `GET`
+
+##### Obtener Cliente por ID
+
+- **URL**: `/api/clientes/:id`
+- **Método**: `GET`
+
+##### Actualizar Cliente
+
+- **URL**: `/api/clientes/:id`
+- **Método**: `PUT`
+- **Cuerpo**: (cualquier campo que desees actualizar)
+
+```json
+{
+  "t_documento_id": 1,
+  "n_documento": "34567891",
+  "nombres": "Ana",
+  "apellidos": "Díaz",
+  "email": "ana.diaz@test.com",
+  "celular": "927654322",
+  "direccion": "Calle Los Pinos 123",
+  "m_edad": true
+}
+```
+
+##### Eliminar Cliente
+
+- **URL**: `/api/clientes/:id`
+- **Método**: `DELETE`
+
+#### Usuarios
+
+##### Crear Usuario
+
+- **URL**: `/api/usuarios`
+- **Método**: `POST`
+- **Cuerpo**:
+
+```json
+{
+  "nombres": "Juan",
+  "apellidos": "Pérez",
+  "email": "juan.perez@example.com",
+  "password": "password123",
+  "rol": "admin"
+}
+```
+
+##### Obtener Todos los Usuarios
+
+- **URL**: `/api/usuarios`
+- **Método**: `GET`
+
+##### Obtener Usuario por ID
+
+- **URL**: `/api/usuarios/:id`
+- **Método**: `GET`
+
+##### Actualizar Usuario
+
+- **URL**: `/api/usuarios/:id`
+- **Método**: `PUT`
+- **Cuerpo**: (cualquier campo que desees actualizar)
+
+```json
+{
+  "nombres": "Juan",
+  "apellidos": "Pérez",
+  "email": "juan.perez@example.com",
+  "password": "newpassword123",
+  "rol": "admin"
+}
+```
+
+##### Eliminar Usuario
+
+- **URL**: `/api/usuarios/:id`
+- **Método**: `DELETE`
+
+##### Login de Usuario
+
+- **URL**: `/api/usuarios/login`
+- **Método**: `POST`
+- **Cuerpo**:
+
+```json
+{
+  "email": "juan.perez@example.com",
+  "password": "password123"
+}
+```
+
+#### Tutores
+
+##### Crear Tutor
+
+- **URL**: `/api/tutores`
+- **Método**: `POST`
+- **Cuerpo**:
+
+```json
+{
+  "t_documento_id": 1,
+  "n_documento": "12345679",
+  "nombres": "María",
+  "apellidos": "López",
+  "email": "maria.lopez@example.com",
+  "celular": "955432100"
+}
+```
+
+##### Obtener Todos los Tutores
+
+- **URL**: `/api/tutores`
+- **Método**: `GET`
+
+##### Obtener Tutor por ID
+
+- **URL**: `/api/tutores/:id`
+- **Método**: `GET`
+
+##### Actualizar Tutor
+
+- **URL**: `/api/tutores/:id`
+- **Método**: `PUT`
+- **Cuerpo**: (cualquier campo que desees actualizar)
+
+```json
+{
+  "t_documento_id": 1,
+  "n_documento": "12345670",
+  "nombres": "Gimena",
+  "apellidos": "López",
+  "email": "gimena.lopez@example.com",
+  "celular": "955432100"
+}
+```
+
+##### Eliminar Tutor
+
+- **URL**: `/api/tutores/:id`
+- **Método**: `DELETE`
+
+#### Tipos de Consumo
+
+##### Crear Tipo de Consumo
+
+- **URL**: `/api/tipos-consumo`
+- **Método**: `POST`
+- **Cuerpo**:
+
+```json
+{
+  "nombre": "Producto"
+}
+```
+
+##### Obtener Todos los Tipos de Consumo
+
+- **URL**: `/api/tipos-consumo`
+- **Método**: `GET`
+
+##### Obtener Tipo de Consumo por ID
+
+- **URL**: `/api/tipos-consumo/:id`
+- **Método**: `GET`
+
+##### Actualizar Tipo de Consumo
+
+- **URL**: `/api/tipos-consumo/:id`
+- **Método**: `PUT`
+- **Cuerpo**: (cualquier campo que desees actualizar)
+
+```json
+{
+  "nombre": "Servicio"
+}
+```
+
+##### Eliminar Tipo de Consumo
+
+- **URL**: `/api/tipos-consumo/:id`
+- **Método**: `DELETE`
+
+#### Tipos de Reclamo
+
+##### Crear Tipo de Reclamo
+
+- **URL**: `/api/tipos-reclamo`
+- **Método**: `POST`
+- **Cuerpo**:
+
+```json
+{
+  "nombre": "Queja"
+}
+```
+
+##### Obtener Todos los Tipos de Reclamo
+
+- **URL**: `/api/tipos-reclamo`
+- **Método**: `GET`
+
+##### Obtener Tipo de Reclamo por ID
+
+- **URL**: `/api/tipos-reclamo/:id`
+- **Método**: `GET`
+
+##### Actualizar Tipo de Reclamo
+
+- **URL**: `/api/tipos-reclamo/:id`
+- **Método**: `PUT`
+- **Cuerpo**: (cualquier campo que desees actualizar)
+
+```json
+{
+  "nombre": "Reclamo"
+}
+```
+
+##### Eliminar Tipo de Reclamo
+
+- **URL**: `/api/tipos-reclamo/:id`
+- **Método**: `DELETE`
+
+#### Reclamos
+
+##### Crear Reclamo
+
+- **URL**: `/api/reclamos`
+- **Método**: `POST`
+- **Cuerpo**:
 
 ```json
 {
@@ -106,23 +364,46 @@ Envía una solicitud POST a `http://localhost:3000/api/reclamos` con el siguient
 }
 ```
 
-### Actualizar un Reclamo
+##### Obtener Todos los Reclamos
 
-Envía una solicitud PUT a `http://localhost:3000/api/reclamos/:id` con el cuerpo a actualizar.
+- **URL**: `/api/reclamos`
+- **Método**: `GET`
 
-### Asignar un Reclamo
+##### Obtener Reclamo por ID
 
-Envía una solicitud POST a `http://localhost:3000/api/reclamos/:id/asignar` con el siguiente cuerpo:
+- **URL**: `/api/reclamos/:id`
+- **Método**: `GET`
+
+##### Actualizar Reclamo
+
+- **URL**: `/api/reclamos/:id`
+- **Método**: `PUT`
+- **Cuerpo**: (cualquier campo que desees actualizar)
 
 ```json
 {
-  "asignadoA": 1
+  "m_reclamado": 200.00,
+  "descripcion": "Nueva descripción del reclamo"
 }
 ```
 
-### Resolver un Reclamo
+##### Asignar Reclamo
 
-Envía una solicitud POST a `http://localhost:3000/api/reclamos/:id/resolver` con el siguiente cuerpo:
+- **URL**: `/api/reclamos/:id/asignar`
+- **Método**: `POST`
+- **Cuerpo**:
+
+```json
+{
+  "u_asignado": 1
+}
+```
+
+##### Resolver Reclamo
+
+- **URL**: `/api/reclamos/:id/resolver`
+- **Método**: `POST`
+- **Cuerpo**:
 
 ```json
 {
@@ -131,9 +412,10 @@ Envía una solicitud POST a `http://localhost:3000/api/reclamos/:id/resolver` co
 }
 ```
 
-### Eliminar un Reclamo
+##### Eliminar Reclamo
 
-Envía una solicitud DELETE a `http://localhost:3000/api/reclamos/:id`.
+- **URL**: `/api/reclamos/:id`
+- **Método**: `DELETE`
 
 ## Contribuir
 
@@ -142,4 +424,3 @@ Si deseas contribuir al proyecto, por favor abre un issue o envía un pull reque
 ## Licencia
 
 Este proyecto está bajo la licencia MIT. Ver el archivo [LICENSE](LICENSE) para más detalles.
-```

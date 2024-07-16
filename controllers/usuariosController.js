@@ -1,7 +1,13 @@
+// Modelo de datos
 const Usuario = require('../models/Usuario');
+
+// Biblioteca Bcrypt para JWT
 const bcrypt = require('bcrypt');
+
+// Servicio de correo
 const sendEmail = require('../services/emailService');
 
+// Crear un nuevo usuario
 exports.createUsuario = async (req, res) => {
   try {
     const { nombres, apellidos, email, password, rol } = req.body;
@@ -34,6 +40,7 @@ exports.createUsuario = async (req, res) => {
   }
 };
 
+// Obtener todos los usuarios
 exports.getUsuarios = async (req, res) => {
   try {
     const usuarios = await Usuario.findAll();
@@ -43,6 +50,7 @@ exports.getUsuarios = async (req, res) => {
   }
 };
 
+// Obtener un usuario por ID
 exports.getUsuarioById = async (req, res) => {
   try {
     const usuario = await Usuario.findByPk(req.params.id);
@@ -55,6 +63,7 @@ exports.getUsuarioById = async (req, res) => {
   }
 };
 
+// Actualizar un usuario
 exports.updateUsuario = async (req, res) => {
   try {
     const { id } = req.params;
@@ -77,23 +86,21 @@ exports.updateUsuario = async (req, res) => {
   }
 };
 
+// Eliminar un usuario
 exports.deleteUsuario = async (req, res) => {
   try {
     const { id } = req.params;
-
-    const usuario = await Usuario.findByPk(id);
-    if (!usuario) {
-      return res.status(404).json({ message: "Usuario no encontrado" });
+    const deleted = await Usuario.destroy({ where: { id } });
+    if (deleted) {
+      return res.status(200).json({ message: "Usuario eliminado con éxito" });
     }
-
-    await usuario.destroy();
-
-    res.status(204).json();
+    throw new Error("Usuario no encontrado");
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
+// Login de usuario
 exports.loginUsuario = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -108,7 +115,7 @@ exports.loginUsuario = async (req, res) => {
       return res.status(401).json({ message: "Usuario o contraseña incorrectos" });
     }
 
-    // Generar y devolver un token JWT (puedes usar cualquier biblioteca JWT)
+    // Generar y devolver un token JWT
     const token = generateJWT(usuario);
 
     res.status(200).json({ token });
@@ -117,6 +124,7 @@ exports.loginUsuario = async (req, res) => {
   }
 };
 
+// Función para generar un JWT
 function generateJWT(usuario) {
   const jwt = require('jsonwebtoken');
   const secret = process.env.JWT_SECRET || 'your_jwt_secret';

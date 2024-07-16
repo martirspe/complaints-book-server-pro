@@ -1,5 +1,9 @@
 const { DataTypes } = require('sequelize');
+
+// Configuración de DB
 const { sequelize } = require('../config/db');
+
+// Modelos de datos
 const Usuario = require('./Usuario');
 const Cliente = require('./Cliente');
 const Tutor = require('./Tutor');
@@ -22,7 +26,7 @@ const Reclamo = sequelize.define('Reclamo', {
       key: 'id'
     }
   },
-  tipo_reclamo_id: {
+  t_reclamo_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
@@ -30,7 +34,7 @@ const Reclamo = sequelize.define('Reclamo', {
       key: 'id'
     }
   },
-  tipo_consumo_id: {
+  t_consumo_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
@@ -65,7 +69,7 @@ const Reclamo = sequelize.define('Reclamo', {
     allowNull: false,
     defaultValue: false
   },
-  asignadoA: {
+  u_asignado: {
     type: DataTypes.INTEGER,
     references: {
       model: Usuario,
@@ -84,24 +88,27 @@ const Reclamo = sequelize.define('Reclamo', {
     allowNull: false,
     defaultValue: 1
   },
-  fecha_creacion: {
+  f_creacion: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW
   },
-  fecha_actualizacion: {
+  f_resolucion: {
+    type: DataTypes.DATE,
+  },
+  f_actualizacion: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW
   }
 }, {
   timestamps: true,
-  createdAt: 'fecha_creacion',
-  updatedAt: 'fecha_actualizacion',
+  createdAt: 'f_creacion',
+  updatedAt: 'f_actualizacion',
   tableName: 'reclamos',
   hooks: {
     beforeUpdate: (reclamo, options) => {
-      reclamo.fecha_actualizacion = new Date();
+      reclamo.f_actualizacion = new Date();
       if (reclamo.resuelto) {
-        reclamo.fecha_resolucion = new Date();
+        reclamo.f_resolucion = new Date();
       }
     }
   }
@@ -113,14 +120,13 @@ Reclamo.belongsTo(Cliente, { foreignKey: 'cliente_id' });
 Tutor.hasMany(Reclamo, { foreignKey: 'tutor_id' });
 Reclamo.belongsTo(Tutor, { foreignKey: 'tutor_id' });
 
-TipoReclamo.hasMany(Reclamo, { foreignKey: 'tipo_reclamo_id' });
-Reclamo.belongsTo(TipoReclamo, { foreignKey: 'tipo_reclamo_id' });
+TipoReclamo.hasMany(Reclamo, { foreignKey: 't_reclamo_id' });
+Reclamo.belongsTo(TipoReclamo, { foreignKey: 't_reclamo_id' });
 
-TipoConsumo.hasMany(Reclamo, { foreignKey: 'tipo_consumo_id' });
-Reclamo.belongsTo(TipoConsumo, { foreignKey: 'tipo_consumo_id' });
+TipoConsumo.hasMany(Reclamo, { foreignKey: 't_consumo_id' });
+Reclamo.belongsTo(TipoConsumo, { foreignKey: 't_consumo_id' });
 
-Usuario.hasMany(Reclamo, { foreignKey: 'asignadoA', as: 'reclamosAsignados' });
-Reclamo.belongsTo(Usuario, { foreignKey: 'asignadoA', as: 'asignadoUsuario' });
-
+Usuario.hasMany(Reclamo, { foreignKey: 'u_asignado', as: 'reclamosAsignados' });
+Reclamo.belongsTo(Usuario, { foreignKey: 'u_asignado', as: 'asignadoUsuario' });
 
 module.exports = Reclamo;

@@ -1,5 +1,8 @@
+// Modelos de datos
 const Tutor = require('../models/Tutor');
+const TipoDocumento = require('../models/TipoDocumento');
 
+// Crear un nuevo tutor
 exports.createTutor = async (req, res) => {
   try {
     const tutor = await Tutor.create(req.body);
@@ -9,18 +12,28 @@ exports.createTutor = async (req, res) => {
   }
 };
 
+// Obtener todos los tutores
 exports.getTutores = async (req, res) => {
   try {
-    const tutores = await Tutor.findAll();
+    const tutores = await Tutor.findAll({
+      include: [
+        { model: TipoDocumento }
+      ]
+    });
     res.status(200).json(tutores);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
+// Obtener un tutor por ID
 exports.getTutorById = async (req, res) => {
   try {
-    const tutor = await Tutor.findByPk(req.params.id);
+    const tutor = await Tutor.findByPk(req.params.id, {
+      include: [
+        { model: TipoDocumento }
+      ]
+    });
     if (!tutor) {
       return res.status(404).json({ message: "Tutor no encontrado" });
     }
@@ -30,6 +43,7 @@ exports.getTutorById = async (req, res) => {
   }
 };
 
+// Actualizar un tutor
 exports.updateTutor = async (req, res) => {
   try {
     const { id } = req.params;
@@ -44,12 +58,13 @@ exports.updateTutor = async (req, res) => {
   }
 };
 
+// Eliminar un tutor
 exports.deleteTutor = async (req, res) => {
   try {
     const { id } = req.params;
     const deleted = await Tutor.destroy({ where: { id } });
     if (deleted) {
-      return res.status(204).json();
+      return res.status(200).json({ message: "Tutor eliminado con éxito" });
     }
     throw new Error("Tutor no encontrado");
   } catch (error) {

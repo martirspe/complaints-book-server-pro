@@ -1,4 +1,6 @@
 const { DataTypes } = require('sequelize');
+
+// Configuración de DB
 const { sequelize } = require('../config/db');
 
 const TipoReclamo = sequelize.define('TipoReclamo', {

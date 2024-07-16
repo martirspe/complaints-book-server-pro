@@ -1,5 +1,7 @@
+// Modelo de datos
 const TipoConsumo = require('../models/TipoConsumo');
 
+// Crear un nuevo tipo de consumo
 exports.createTipoConsumo = async (req, res) => {
   try {
     const tipoConsumo = await TipoConsumo.create(req.body);
@@ -9,6 +11,7 @@ exports.createTipoConsumo = async (req, res) => {
   }
 };
 
+// Obtener todos los tipos de consumo
 exports.getTiposConsumo = async (req, res) => {
   try {
     const tiposConsumo = await TipoConsumo.findAll();
@@ -18,6 +21,7 @@ exports.getTiposConsumo = async (req, res) => {
   }
 };
 
+// Obtener un tipo de consumo por ID
 exports.getTipoConsumoById = async (req, res) => {
   try {
     const tipoConsumo = await TipoConsumo.findByPk(req.params.id);
@@ -30,6 +34,7 @@ exports.getTipoConsumoById = async (req, res) => {
   }
 };
 
+// Actualizar un tipo de consumo
 exports.updateTipoConsumo = async (req, res) => {
   try {
     const { id } = req.params;
@@ -44,12 +49,13 @@ exports.updateTipoConsumo = async (req, res) => {
   }
 };
 
+// Eliminar un tipo de consumo
 exports.deleteTipoConsumo = async (req, res) => {
   try {
     const { id } = req.params;
     const deleted = await TipoConsumo.destroy({ where: { id } });
     if (deleted) {
-      return res.status(204).json();
+      return res.status(200).json({ message: "Tipo de consumo eliminado con éxito" });
     }
     throw new Error("Tipo de consumo no encontrado");
   } catch (error) {

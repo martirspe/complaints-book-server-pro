@@ -1,5 +1,7 @@
+// Modelo de datos
 const TipoReclamo = require('../models/TipoReclamo');
 
+// Crear un nuevo tipo de reclamo
 exports.createTipoReclamo = async (req, res) => {
   try {
     const tipoReclamo = await TipoReclamo.create(req.body);
@@ -9,6 +11,7 @@ exports.createTipoReclamo = async (req, res) => {
   }
 };
 
+// Obtener todos los tipos de reclamo
 exports.getTiposReclamo = async (req, res) => {
   try {
     const tiposReclamo = await TipoReclamo.findAll();
@@ -18,6 +21,7 @@ exports.getTiposReclamo = async (req, res) => {
   }
 };
 
+// Obtener un tipo de reclamo por ID
 exports.getTipoReclamoById = async (req, res) => {
   try {
     const tipoReclamo = await TipoReclamo.findByPk(req.params.id);
@@ -30,6 +34,7 @@ exports.getTipoReclamoById = async (req, res) => {
   }
 };
 
+// Actualizar un tipo de reclamo
 exports.updateTipoReclamo = async (req, res) => {
   try {
     const { id } = req.params;
@@ -44,12 +49,13 @@ exports.updateTipoReclamo = async (req, res) => {
   }
 };
 
+// Eliminar un tipo de reclamo
 exports.deleteTipoReclamo = async (req, res) => {
   try {
     const { id } = req.params;
     const deleted = await TipoReclamo.destroy({ where: { id } });
     if (deleted) {
-      return res.status(204).json();
+      return res.status(200).json({ message: "Tipo de reclamo eliminado con éxito" });
     }
     throw new Error("Tipo de reclamo no encontrado");
   } catch (error) {

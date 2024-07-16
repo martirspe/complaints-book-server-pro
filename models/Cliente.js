@@ -1,10 +1,19 @@
 const { DataTypes } = require('sequelize');
+
+// Configuración de DB
 const { sequelize } = require('../config/db');
 
+// Modelo de datos
+const TipoDocumento = require('./TipoDocumento');
+
 const Cliente = sequelize.define('Cliente', {
-  t_documento: {
-    type: DataTypes.STRING,
-    allowNull: false
+  t_documento_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: TipoDocumento,
+      key: 'id'
+    }
   },
   n_documento: {
     type: DataTypes.STRING,
@@ -41,5 +50,8 @@ const Cliente = sequelize.define('Cliente', {
   timestamps: false,
   tableName: 'clientes'
 });
+
+TipoDocumento.hasMany(Cliente, { foreignKey: 't_documento_id' });
+Cliente.belongsTo(TipoDocumento, { foreignKey: 't_documento_id' });
 
 module.exports = Cliente;

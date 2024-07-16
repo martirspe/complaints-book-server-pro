@@ -3,14 +3,14 @@ const { DataTypes } = require('sequelize');
 // Configuración de DB
 const { sequelize } = require('../config/db');
 
-const TipoConsumo = sequelize.define('TipoConsumo', {
+const TipoDocumento = sequelize.define('TipoDocumento', {
   nombre: {
     type: DataTypes.STRING,
-    allowNull: false
-  }
+    allowNull: false,
+  },
 }, {
   timestamps: false,
-  tableName: 'tipos_consumo'
+  tableName: 'tipos_documento'
 });
 
-module.exports = TipoConsumo;
+module.exports = TipoDocumento;
