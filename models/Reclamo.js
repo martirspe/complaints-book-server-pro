@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/db');
+const Usuario = require('./Usuario');
 const Cliente = require('./Cliente');
 const Tutor = require('./Tutor');
 const TipoReclamo = require('./TipoReclamo');
@@ -61,17 +62,22 @@ const Reclamo = sequelize.define('Reclamo', {
   },
   a_condiciones: {
     type: DataTypes.TINYINT,
-    allowNull: false
+    allowNull: false,
+    defaultValue: false
   },
   asignadoA: {
-    type: DataTypes.STRING
-  },
-  resuelto: {
-    type: DataTypes.TINYINT,
-    defaultValue: 0
+    type: DataTypes.INTEGER,
+    references: {
+      model: Usuario,
+      key: 'id',
+    },
   },
   resolucion: {
     type: DataTypes.TEXT
+  },
+  resuelto: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
   },
   estado: {
     type: DataTypes.TINYINT,
@@ -87,13 +93,34 @@ const Reclamo = sequelize.define('Reclamo', {
     defaultValue: DataTypes.NOW
   }
 }, {
-  timestamps: false,
-  tableName: 'reclamos'
+  timestamps: true,
+  createdAt: 'fecha_creacion',
+  updatedAt: 'fecha_actualizacion',
+  tableName: 'reclamos',
+  hooks: {
+    beforeUpdate: (reclamo, options) => {
+      reclamo.fecha_actualizacion = new Date();
+      if (reclamo.resuelto) {
+        reclamo.fecha_resolucion = new Date();
+      }
+    }
+  }
 });
 
+Cliente.hasMany(Reclamo, { foreignKey: 'cliente_id' });
 Reclamo.belongsTo(Cliente, { foreignKey: 'cliente_id' });
+
+Tutor.hasMany(Reclamo, { foreignKey: 'tutor_id' });
 Reclamo.belongsTo(Tutor, { foreignKey: 'tutor_id' });
+
+TipoReclamo.hasMany(Reclamo, { foreignKey: 'tipo_reclamo_id' });
 Reclamo.belongsTo(TipoReclamo, { foreignKey: 'tipo_reclamo_id' });
+
+TipoConsumo.hasMany(Reclamo, { foreignKey: 'tipo_consumo_id' });
 Reclamo.belongsTo(TipoConsumo, { foreignKey: 'tipo_consumo_id' });
+
+Usuario.hasMany(Reclamo, { foreignKey: 'asignadoA', as: 'reclamosAsignados' });
+Reclamo.belongsTo(Usuario, { foreignKey: 'asignadoA', as: 'asignadoUsuario' });
+
 
 module.exports = Reclamo;

@@ -1,4 +1,5 @@
 const Reclamo = require('../models/Reclamo');
+const Usuario = require('../models/Usuario');
 const Cliente = require('../models/Cliente');
 const Tutor = require('../models/Tutor');
 const TipoReclamo = require('../models/TipoReclamo');
@@ -52,6 +53,8 @@ exports.createReclamo = async (req, res) => {
         tipoReclamo: tipoReclamo.nombre,
         tipoConsumo: tipoConsumo.nombre,
         descripcionReclamo: reclamo.descripcion,
+        detalleReclamo: reclamo.detalle,
+        pedidoReclamo: reclamo.pedido,
         fechaCreacion: reclamo.fecha_creacion
       }
     );
@@ -132,13 +135,49 @@ exports.assignReclamo = async (req, res) => {
     const { id } = req.params;
     const { asignadoA } = req.body;
 
-    const reclamo = await Reclamo.findByPk(id);
+    const reclamo = await Reclamo.findByPk(id, {
+      include: [
+        { model: Cliente },
+        { model: TipoReclamo },
+        { model: TipoConsumo }
+      ]
+    });
     if (!reclamo) {
       return res.status(404).json({ message: 'Reclamo no encontrado' });
     }
 
+    const usuario = await Usuario.findByPk(asignadoA);
+    if (!usuario) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
     reclamo.asignadoA = asignadoA;
     await reclamo.save();
+
+    // Constantes para obtener los datos
+    const cliente = reclamo.Cliente;
+    const tipoReclamo = reclamo.TipoReclamo;
+    const tipoConsumo = reclamo.TipoConsumo;
+
+    // Enviar correo al asignar un reclamo
+    await sendEmail(
+      usuario.email,
+      'Reclamo Asignado',
+      `Hola ${usuario.nombres}, se le ha asignado el reclamo con ID ${reclamo.id}.`,
+      'reclamoAsignado',
+      {
+        nombreAsignado: usuario.nombres,
+        nombreCliente: cliente.nombres,
+        apellidoCliente: cliente.apellidos,
+        idReclamo: reclamo.id,
+        tipoReclamo: tipoReclamo.nombre,
+        tipoConsumo: tipoConsumo.nombre,
+        descripcionReclamo: reclamo.descripcion,
+        detalleReclamo: reclamo.detalle,
+        pedidoReclamo: reclamo.pedido,
+        fechaCreacion: reclamo.fecha_creacion
+      }
+    );
 
     res.status(200).json(reclamo);
   } catch (error) {
@@ -151,7 +190,13 @@ exports.resolveReclamo = async (req, res) => {
     const { id } = req.params;
     const { resolucion, resuelto } = req.body;
 
-    const reclamo = await Reclamo.findByPk(id);
+    const reclamo = await Reclamo.findByPk(id, {
+      include: [
+        { model: Cliente },
+        { model: TipoReclamo },
+        { model: TipoConsumo }
+      ]
+    });
     if (!reclamo) {
       return res.status(404).json({ message: 'Reclamo no encontrado' });
     }
@@ -159,6 +204,31 @@ exports.resolveReclamo = async (req, res) => {
     reclamo.resolucion = resolucion;
     reclamo.resuelto = resuelto;
     await reclamo.save();
+
+    const cliente = reclamo.Cliente;
+    const tipoReclamo = reclamo.TipoReclamo;
+    const tipoConsumo = reclamo.TipoConsumo;
+
+    // Enviar correo al resolver un reclamo
+    await sendEmail(
+      cliente.email,
+      'Reclamo Resuelto',
+      `Hola ${cliente.nombres}, su reclamo con ID ${reclamo.id} ha sido resuelto.`,
+      'reclamoResuelto',
+      {
+        nombreCliente: cliente.nombres,
+        apellidoCliente: cliente.apellidos,
+        idReclamo: reclamo.id,
+        tipoReclamo: tipoReclamo.nombre,
+        tipoConsumo: tipoConsumo.nombre,
+        descripcionReclamo: reclamo.descripcion,
+        detalleReclamo: reclamo.detalle,
+        pedidoReclamo: reclamo.pedido,
+        resolucionReclamo: reclamo.resolucion,
+        fechaCreacion: reclamo.fecha_creacion,
+        fechaResolucion: reclamo.fecha_resolucion
+      }
+    );
 
     res.status(200).json(reclamo);
   } catch (error) {

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nuevo Reclamo Registrado</title>
+    <title>Reclamo Resuelto</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -43,7 +43,7 @@
 <body>
     <div class="container">
         <h2>Hola {{nombreCliente}},</h2>
-        <p>Se ha registrado su reclamo con ID <strong>{{idReclamo}}</strong>.</p>
+        <p>Su reclamo con ID <strong>{{idReclamo}}</strong> ha sido resuelto.</p>
         <div class="reclamo-details">
             <h3>Detalles del Reclamo:</h3>
             <p><strong>Cliente:</strong> {{nombreCliente}} {{apellidoCliente}}</p>
@@ -55,7 +55,10 @@
             <p>{{detalleReclamo}}</p>
             <p><strong>Pedido:</strong></p>
             <p>{{pedidoReclamo}}</p>
-            <p><strong>Fecha de Registro:</strong> {{fechaCreacion}}</p>
+            <p><strong>Fecha de Registro:</strong> {{fechaCreacion}}</p><br>
+            <p><strong>Resolución:</strong></p>
+            <p>{{resolucionReclamo}}</p>
+            <p><strong>Fecha de Resolución:</strong> {{fechaResolucion}}</p>
         </div>
     </div>
 </body>
