@@ -1,7 +1,7 @@
 const express = require('express');
 const {
   createTipoDocumento,
-  getAllTiposDocumento,
+  getTiposDocumento,
   getTipoDocumentoById,
   updateTipoDocumento,
   deleteTipoDocumento
@@ -13,7 +13,7 @@ const router = express.Router();
 router.post('/tipos_documento', createTipoDocumento);
 
 // Obtener todos los tipos de documento
-router.get('/tipos_documento', getAllTiposDocumento);
+router.get('/tipos_documento', getTiposDocumento);
 
 // Obtener un tipo de documento por ID
 router.get('/tipos_documento/:id', getTipoDocumentoById);

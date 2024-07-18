@@ -13,10 +13,16 @@ exports.createTipoDocumento = async (req, res) => {
 };
 
 // Obtener todos los tipos de documentos
-exports.getAllTiposDocumento = async (req, res) => {
+exports.getTiposDocumento = async (req, res) => {
   try {
     const tiposDocumento = await TipoDocumento.findAll();
-    res.json(tiposDocumento);
+
+    // Verificar si existen tipos de documento registrados
+    if (tiposDocumento.length === 0) {
+      return res.status(404).json({ message: 'No hay tipos de documento registrados' });
+    }
+
+    res.status(200).json(tiposDocumento);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

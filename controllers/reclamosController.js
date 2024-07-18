@@ -26,14 +26,14 @@ exports.createReclamo = async (req, res) => {
       }
     }
 
-    const tipoReclamo = await TipoReclamo.findByPk(t_reclamo_id);
-    if (!tipoReclamo) {
-      return res.status(404).json({ message: "Tipo de reclamo no encontrado" });
-    }
-
     const tipoConsumo = await TipoConsumo.findByPk(t_consumo_id);
     if (!tipoConsumo) {
       return res.status(404).json({ message: "Tipo de consumo no encontrado" });
+    }
+
+    const tipoReclamo = await TipoReclamo.findByPk(t_reclamo_id);
+    if (!tipoReclamo) {
+      return res.status(404).json({ message: "Tipo de reclamo no encontrado" });
     }
 
     const reclamo = await Reclamo.create({
@@ -65,7 +65,7 @@ exports.createReclamo = async (req, res) => {
       }
     );
 
-    res.status(201).json(reclamo);
+    res.status(201).json({ message: 'Su reclamo ha sido registrado' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -82,6 +82,11 @@ exports.getReclamos = async (req, res) => {
         { model: TipoConsumo }
       ]
     });
+
+    // Verificar si existen reclamos registrados
+    if (reclamos.length === 0) {
+      return res.status(404).json({ message: 'No hay reclamos registrados' });
+    }
 
     res.status(200).json(reclamos);
   } catch (error) {

@@ -15,6 +15,12 @@ exports.createTipoReclamo = async (req, res) => {
 exports.getTiposReclamo = async (req, res) => {
   try {
     const tiposReclamo = await TipoReclamo.findAll();
+
+    // Verificar si existen tipos de reclamo registrados
+    if (tiposReclamo.length === 0) {
+      return res.status(404).json({ message: 'No hay tipos de reclamo registrados' });
+    }
+
     res.status(200).json(tiposReclamo);
   } catch (error) {
     res.status(500).json({ message: error.message });

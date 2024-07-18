@@ -11,6 +11,11 @@ const TipoReclamo = require('./TipoReclamo');
 const TipoConsumo = require('./TipoConsumo');
 
 const Reclamo = sequelize.define('Reclamo', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
   cliente_id: {
     type: DataTypes.INTEGER,
     allowNull: false,

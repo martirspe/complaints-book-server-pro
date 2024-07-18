@@ -7,6 +7,11 @@ const { sequelize } = require('../config/db');
 const TipoDocumento = require('./TipoDocumento');
 
 const Cliente = sequelize.define('Cliente', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
   t_documento_id: {
     type: DataTypes.INTEGER,
     allowNull: false,

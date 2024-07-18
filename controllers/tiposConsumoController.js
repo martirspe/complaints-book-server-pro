@@ -15,6 +15,12 @@ exports.createTipoConsumo = async (req, res) => {
 exports.getTiposConsumo = async (req, res) => {
   try {
     const tiposConsumo = await TipoConsumo.findAll();
+
+    // Verificar si existen tipos de consumo registrados
+    if (tiposConsumo.length === 0) {
+      return res.status(404).json({ message: 'No hay tipos de consumo registrados' });
+    }
+
     res.status(200).json(tiposConsumo);
   } catch (error) {
     res.status(500).json({ message: error.message });

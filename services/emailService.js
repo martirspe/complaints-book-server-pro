@@ -2,13 +2,20 @@ const nodemailer = require('nodemailer');
 const fs = require('fs');
 const path = require('path');
 
+// Obtener datos de las variables de entorno
+const EMAIL_HOST = process.env.EMAIL_HOST;
+const EMAIL_PORT = process.env.EMAIL_PORT;
+const EMAIL_SECURE = process.env.EMAIL_SECURE;
+const EMAIL_USER = process.env.EMAIL_USER;
+const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD;
+
 const transporter = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    port: process.env.EMAIL_PORT,
-    secure: process.env.EMAIL_SECURE === 'true',
+    host: EMAIL_HOST,
+    port: EMAIL_PORT,
+    secure: EMAIL_SECURE,
     auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD
+        user: EMAIL_USER,
+        pass: EMAIL_PASSWORD
     }
 });
 
@@ -23,7 +30,7 @@ const sendEmail = async (to, subject, text, templateName, replacements) => {
         });
 
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: EMAIL_USER,
             to: to,
             subject: subject,
             html: replacedHtml
