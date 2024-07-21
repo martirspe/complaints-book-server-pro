@@ -5,9 +5,10 @@ const usuariosRoutes = require('./usuariosRoutes');
 const clientesRoutes = require('./clientesRoutes');
 const tutoresRoutes = require('./tutoresRoutes');
 const tiposDocumentoRoutes = require('./tiposDocumentoRoutes');
-const tiposReclamoRoutes = require('./tiposReclamoRoutes');
 const tiposConsumoRoutes = require('./tiposConsumoRoutes');
+const tiposReclamoRoutes = require('./tiposReclamoRoutes');
 const reclamosRoutes = require('./reclamosRoutes');
+const uploadRoutes = require('./uploadRoutes');
 
 const router = express.Router();
 
@@ -23,13 +24,16 @@ router.use('/api', tutoresRoutes);
 // Rutas API de tipos de documento
 router.use('/api', tiposDocumentoRoutes);
 
-// Rutas API de tipos de reclamo
-router.use('/api', tiposReclamoRoutes);
-
 // Rutas API de tipos de consumo
 router.use('/api', tiposConsumoRoutes);
 
+// Rutas API de tipos de reclamo
+router.use('/api', tiposReclamoRoutes);
+
 // Rutas API de reclamos
 router.use('/api', reclamosRoutes);
+
+// Rutas API de upload
+router.use('/api', uploadRoutes);
 
 module.exports = router;

@@ -1,10 +1,13 @@
+// Biblioteca para formatear fecha
+const moment = require('moment');
+
 // Modelos de datos
 const Reclamo = require('../models/Reclamo');
 const Usuario = require('../models/Usuario');
 const Cliente = require('../models/Cliente');
 const Tutor = require('../models/Tutor');
-const TipoReclamo = require('../models/TipoReclamo');
 const TipoConsumo = require('../models/TipoConsumo');
+const TipoReclamo = require('../models/TipoReclamo');
 
 // Servicio de correo
 const sendEmail = require('../services/emailService');
@@ -36,36 +39,55 @@ exports.createReclamo = async (req, res) => {
       return res.status(404).json({ message: "Tipo de reclamo no encontrado" });
     }
 
+    // Manejo del archivo adjunto
+    if (req.file) {
+      reclamoData.a_adjunto = req.file.path;
+    }
+
     const reclamo = await Reclamo.create({
       cliente_id,
       tutor_id,
-      t_reclamo_id,
       t_consumo_id,
+      t_reclamo_id,
       ...reclamoData
     });
+
+    // Generar código de reclamo
+    const currentYear = new Date().getFullYear();
+    const prefix = tipoReclamo.nombre.substring(0, 3).toUpperCase();
+    const codigoReclamo = `${prefix}${currentYear}${reclamo.id}`;
+    reclamo.codigo = codigoReclamo;
+    await reclamo.save();
+
+    // Formatear la fecha
+    const fechaFormateada = moment(reclamo.f_creacion).format('DD/MM/YYYY - hh:mmA');
+
+    // Preparar adjuntos para el correo
+    const attachments = req.file ? [{ filename: req.file.originalname, path: req.file.path }] : [];
 
     // Enviar correo al crear un reclamo
     await sendEmail(
       cliente.email,
       'Nuevo Reclamo Registrado',
-      `Hola ${cliente.nombres}, se ha registrado su reclamo con ID ${reclamo.id}.`,
+      `Hola ${cliente.nombres}, se ha registrado su reclamo con el código: ${reclamo.codigo}.`,
       'nuevoReclamo',
       {
+        codigoReclamo: reclamo.codigo,
         nombreCliente: cliente.nombres,
         apellidoCliente: cliente.apellidos,
-        idReclamo: reclamo.id,
-        tipoReclamo: tipoReclamo.nombre,
         tipoConsumo: tipoConsumo.nombre,
+        tipoReclamo: tipoReclamo.nombre,
         numeroPedido: reclamo.n_pedido,
         montoReclamado: reclamo.m_reclamado,
         descripcionReclamo: reclamo.descripcion,
         detalleReclamo: reclamo.detalle,
         pedidoReclamo: reclamo.pedido,
-        fechaCreacion: reclamo.f_creacion
-      }
+        fechaCreacion: fechaFormateada
+      },
+      attachments
     );
 
-    res.status(201).json({ message: 'Su reclamo ha sido registrado' });
+    res.status(201).json({ message: "Su reclamo ha sido registrado" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -78,8 +100,8 @@ exports.getReclamos = async (req, res) => {
       include: [
         { model: Cliente },
         { model: Tutor },
-        { model: TipoReclamo },
-        { model: TipoConsumo }
+        { model: TipoConsumo },
+        { model: TipoReclamo }
       ]
     });
 
@@ -101,8 +123,8 @@ exports.getReclamoById = async (req, res) => {
       include: [
         { model: Cliente },
         { model: Tutor },
-        { model: TipoReclamo },
-        { model: TipoConsumo }
+        { model: TipoConsumo },
+        { model: TipoReclamo }
       ]
     });
 
@@ -120,11 +142,55 @@ exports.getReclamoById = async (req, res) => {
 exports.updateReclamo = async (req, res) => {
   try {
     const { id } = req.params;
-    const [updated] = await Reclamo.update(req.body, { where: { id } });
-    if (updated) {
-      const updatedReclamo = await Reclamo.findByPk(id);
-      return res.status(200).json(updatedReclamo);
+    const reclamoData = req.body;
+
+    // Manejo del archivo adjunto
+    if (req.file) {
+      reclamoData.a_adjunto = req.file.path;
     }
+
+    const [updated] = await Reclamo.update(reclamoData, { where: { id } });
+    if (updated) {
+      const updatedReclamo = await Reclamo.findByPk(id, {
+        include: [Cliente, TipoReclamo, TipoConsumo]
+      });
+
+      // Constantes para obtener los datos
+      const cliente = updatedReclamo.Cliente;
+      const tipoConsumo = updatedReclamo.TipoConsumo;
+      const tipoReclamo = updatedReclamo.TipoReclamo;
+
+      // Formatear la fecha
+      const fechaFormateada = moment(updatedReclamo.f_actualizacion).format('DD/MM/YYYY - hh:mmA');
+
+      // Preparar adjuntos para el correo
+      const attachments = req.file ? [{ filename: req.file.originalname, path: req.file.path }] : [];
+
+      // Enviar correo al actualizar un reclamo
+      await sendEmail(
+        cliente.email,
+        'Reclamo Actualizado',
+        `Hola ${cliente.nombres}, su reclamo con el código: ${updatedReclamo.codigo} ha sido actualizado.`,
+        'reclamoActualizado',
+        {
+          codigoReclamo: updatedReclamo.codigo,
+          nombreCliente: cliente.nombres,
+          apellidoCliente: cliente.apellidos,
+          tipoConsumo: tipoConsumo.nombre,
+          tipoReclamo: tipoReclamo.nombre,
+          numeroPedido: updatedReclamo.n_pedido,
+          montoReclamado: updatedReclamo.m_reclamado,
+          descripcionReclamo: updatedReclamo.descripcion,
+          detalleReclamo: updatedReclamo.detalle,
+          pedidoReclamo: updatedReclamo.pedido,
+          fechaActualizacion: fechaFormateada
+        },
+        attachments
+      );
+
+      return res.status(200).json({ message: "Su reclamo ha sido actualizado" });
+    }
+
     throw new Error("Reclamo no encontrado");
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -154,8 +220,8 @@ exports.assignReclamo = async (req, res) => {
     const reclamo = await Reclamo.findByPk(id, {
       include: [
         { model: Cliente },
-        { model: TipoReclamo },
-        { model: TipoConsumo }
+        { model: TipoConsumo },
+        { model: TipoReclamo }
       ]
     });
     if (!reclamo) {
@@ -172,32 +238,35 @@ exports.assignReclamo = async (req, res) => {
 
     // Constantes para obtener los datos
     const cliente = reclamo.Cliente;
-    const tipoReclamo = reclamo.TipoReclamo;
     const tipoConsumo = reclamo.TipoConsumo;
+    const tipoReclamo = reclamo.TipoReclamo;
+
+    // Formatear la fecha
+    const fechaFormateada = moment(reclamo.f_creacion).format('DD/MM/YYYY - hh:mmA');
 
     // Enviar correo al asignar un reclamo
     await sendEmail(
       usuario.email,
       'Reclamo Asignado',
-      `Hola ${usuario.nombres}, se le ha asignado el reclamo con ID ${reclamo.id}.`,
+      `Hola ${usuario.nombres}, se le ha asignado el reclamo con el código: ${reclamo.codigo}.`,
       'reclamoAsignado',
       {
+        codigoReclamo: reclamo.codigo,
         nombreAsignado: usuario.nombres,
         nombreCliente: cliente.nombres,
         apellidoCliente: cliente.apellidos,
-        idReclamo: reclamo.id,
-        tipoReclamo: tipoReclamo.nombre,
         tipoConsumo: tipoConsumo.nombre,
+        tipoReclamo: tipoReclamo.nombre,
         numeroPedido: reclamo.n_pedido,
         montoReclamado: reclamo.m_reclamado,
         descripcionReclamo: reclamo.descripcion,
         detalleReclamo: reclamo.detalle,
         pedidoReclamo: reclamo.pedido,
-        fechaCreacion: reclamo.f_creacion
+        fechaCreacion: fechaFormateada
       }
     );
 
-    res.status(200).json(reclamo);
+    res.status(200).json({ message: `Su reclamo ha sido asignado a ${usuario.nombres}` });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -207,52 +276,65 @@ exports.assignReclamo = async (req, res) => {
 exports.resolveReclamo = async (req, res) => {
   try {
     const { id } = req.params;
-    const { resolucion, resuelto } = req.body;
+    const { respuesta, resuelto } = req.body;
 
     const reclamo = await Reclamo.findByPk(id, {
       include: [
         { model: Cliente },
-        { model: TipoReclamo },
-        { model: TipoConsumo }
+        { model: TipoConsumo },
+        { model: TipoReclamo }
       ]
     });
     if (!reclamo) {
       return res.status(404).json({ message: 'Reclamo no encontrado' });
     }
 
-    reclamo.resolucion = resolucion;
+    reclamo.respuesta = respuesta;
     reclamo.resuelto = resuelto;
+
+    // Manejar archivo adjunto
+    if (req.file) {
+      reclamo.r_adjunto = req.file.path;
+    }
+
     await reclamo.save();
 
     // Constantes para obtener los datos
     const cliente = reclamo.Cliente;
-    const tipoReclamo = reclamo.TipoReclamo;
     const tipoConsumo = reclamo.TipoConsumo;
+    const tipoReclamo = reclamo.TipoReclamo;
+
+    // Formatear la fecha
+    const fechaFormateada = moment(reclamo.f_respuesta).format('DD/MM/YYYY - hh:mmA');
+
+    // Preparar adjuntos para el correo
+    const attachments = req.file ? [{ filename: req.file.originalname, path: req.file.path }] : [];
 
     // Enviar correo al resolver un reclamo
     await sendEmail(
       cliente.email,
       'Reclamo Resuelto',
-      `Hola ${cliente.nombres}, su reclamo con ID ${reclamo.id} ha sido resuelto.`,
+      `Hola ${cliente.nombres}, su reclamo con el código: ${reclamo.codigo} ha sido resuelto.`,
       'reclamoResuelto',
       {
+        codigoReclamo: reclamo.codigo,
         nombreCliente: cliente.nombres,
         apellidoCliente: cliente.apellidos,
-        idReclamo: reclamo.id,
-        tipoReclamo: tipoReclamo.nombre,
         tipoConsumo: tipoConsumo.nombre,
+        tipoReclamo: tipoReclamo.nombre,
         numeroPedido: reclamo.n_pedido,
         montoReclamado: reclamo.m_reclamado,
         descripcionReclamo: reclamo.descripcion,
         detalleReclamo: reclamo.detalle,
         pedidoReclamo: reclamo.pedido,
-        resolucionReclamo: reclamo.resolucion,
+        respuestaReclamo: reclamo.respuesta,
         fechaCreacion: reclamo.f_creacion,
-        fechaResolucion: reclamo.f_resolucion
-      }
+        fechaRespuesta: fechaFormateada
+      },
+      attachments
     );
 
-    res.status(200).json(reclamo);
+    res.status(200).json({ message: `Su reclamo ha sido resuelto` });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

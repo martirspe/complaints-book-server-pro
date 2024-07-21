@@ -1,4 +1,6 @@
 const express = require('express');
+
+// Controlador de tipos de consumo
 const {
   createTipoConsumo,
   getTiposConsumo,

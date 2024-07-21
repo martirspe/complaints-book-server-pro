@@ -1,4 +1,6 @@
 const express = require('express');
+
+// Controlador de usuarios
 const {
   createUsuario,
   getUsuarios,

@@ -1,11 +1,13 @@
 const express = require('express');
+
+// Controlador de tipos de documento
 const {
   createTipoDocumento,
   getTiposDocumento,
   getTipoDocumentoById,
   updateTipoDocumento,
   deleteTipoDocumento
-} = require('../controllers/tipoDocumentoController');
+} = require('../controllers/tiposDocumentoController');
 
 const router = express.Router();
 

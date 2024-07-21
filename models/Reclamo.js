@@ -16,6 +16,11 @@ const Reclamo = sequelize.define('Reclamo', {
     primaryKey: true,
     autoIncrement: true
   },
+  codigo: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    unique: true
+  },
   cliente_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -26,6 +31,7 @@ const Reclamo = sequelize.define('Reclamo', {
   },
   tutor_id: {
     type: DataTypes.INTEGER,
+    allowNull: false,
     references: {
       model: Tutor,
       key: 'id'
@@ -48,7 +54,8 @@ const Reclamo = sequelize.define('Reclamo', {
     }
   },
   n_pedido: {
-    type: DataTypes.INTEGER
+    type: DataTypes.INTEGER,
+    allowNull: true,
   },
   m_reclamado: {
     type: DataTypes.DOUBLE,
@@ -67,22 +74,29 @@ const Reclamo = sequelize.define('Reclamo', {
     allowNull: false
   },
   a_adjunto: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
+    allowNull: true
   },
   a_condiciones: {
-    type: DataTypes.TINYINT,
+    type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: false
   },
   u_asignado: {
     type: DataTypes.INTEGER,
+    allowNull: true,
     references: {
       model: Usuario,
       key: 'id',
     },
   },
-  resolucion: {
-    type: DataTypes.TEXT
+  respuesta: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
+  r_adjunto: {
+    type: DataTypes.STRING,
+    allowNull: true
   },
   resuelto: {
     type: DataTypes.BOOLEAN,
@@ -97,7 +111,7 @@ const Reclamo = sequelize.define('Reclamo', {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW
   },
-  f_resolucion: {
+  f_respuesta: {
     type: DataTypes.DATE,
   },
   f_actualizacion: {
@@ -113,7 +127,7 @@ const Reclamo = sequelize.define('Reclamo', {
     beforeUpdate: (reclamo, options) => {
       reclamo.f_actualizacion = new Date();
       if (reclamo.resuelto) {
-        reclamo.f_resolucion = new Date();
+        reclamo.f_respuesta = new Date();
       }
     }
   }

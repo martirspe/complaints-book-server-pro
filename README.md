@@ -68,6 +68,7 @@ DB_HOST=localhost
 DB_NAME=nombre_base_de_datos   
 DB_USER=usuario
 DB_PASSWORD=contraseña
+EMAIL_COMPANY= My Company
 EMAIL_HOST=mail.example.com
 EMAIL_PORT=465
 EMAIL_SECURE=true
@@ -352,8 +353,8 @@ El servidor se ejecutará en `http://localhost:3000`.
 {
   "cliente_id": 1,
   "tutor_id": 1,
-  "tipo_reclamo_id": 1,
-  "tipo_consumo_id": 1,
+  "t_consumo_id": 1,
+  "t_reclamo_id": 1,
   "n_pedido": 12345,
   "m_reclamado": 100.50,
   "descripcion": "Descripción del reclamo",
@@ -407,7 +408,7 @@ El servidor se ejecutará en `http://localhost:3000`.
 
 ```json
 {
-  "resolucion": "Descripción de la resolución",
+  "respuesta": "Descripción de la resolución",
   "resuelto": true
 }
 ```

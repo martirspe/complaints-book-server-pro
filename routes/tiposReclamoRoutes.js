@@ -1,4 +1,6 @@
 const express = require('express');
+
+// Controlador de tipos de reclamo
 const {
   createTipoReclamo,
   getTiposReclamo,
