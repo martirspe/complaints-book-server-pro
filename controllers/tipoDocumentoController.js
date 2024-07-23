@@ -1,5 +1,5 @@
 // Modelo de datos
-const TipoDocumento = require('../models/TipoDocumento');
+const { TipoDocumento } = require('../models');
 
 // Crear un nuevo tipo de documento
 exports.createTipoDocumento = async (req, res) => {

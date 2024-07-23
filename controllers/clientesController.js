@@ -1,6 +1,5 @@
 // Modelos de datos
-const Cliente = require('../models/Cliente');
-const TipoDocumento = require('../models/TipoDocumento');
+const { Cliente, TipoDocumento } = require('../models');
 
 // Crear un nuevo cliente
 exports.createCliente = async (req, res) => {
@@ -72,7 +71,7 @@ exports.getClienteById = async (req, res) => {
     if (!cliente) {
       return res.status(404).json({ message: "Cliente no encontrado" });
     }
-    
+
     res.status(200).json(cliente);
   } catch (error) {
     res.status(500).json({ message: error.message });

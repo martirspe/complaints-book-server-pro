@@ -111,6 +111,9 @@ const Reclamo = sequelize.define('Reclamo', {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW
   },
+  f_asignacion: {
+    type: DataTypes.DATE,
+  },
   f_respuesta: {
     type: DataTypes.DATE,
   },

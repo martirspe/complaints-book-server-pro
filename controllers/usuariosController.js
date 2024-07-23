@@ -1,5 +1,5 @@
 // Modelo de datos
-const Usuario = require('../models/Usuario');
+const { Usuario } = require('../models');
 
 // Biblioteca Bcrypt para JWT
 const bcrypt = require('bcrypt');
@@ -106,7 +106,7 @@ exports.deleteUsuario = async (req, res) => {
     if (deleted) {
       return res.status(200).json({ message: "Usuario eliminado con éxito" });
     }
-    
+
     throw new Error("Usuario no encontrado");
   } catch (error) {
     res.status(500).json({ message: error.message });

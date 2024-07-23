@@ -4,6 +4,7 @@ const path = require('path');
 
 // Obtener datos de las variables de entorno
 const EMAIL_COMPANY = process.env.EMAIL_COMPANY || 'MartiPE';
+const EMAIL_LOGO_PATH = process.env.EMAIL_LOGO_PATH || 'assets/logos/logo.png';
 const EMAIL_HOST = process.env.EMAIL_HOST;
 const EMAIL_PORT = process.env.EMAIL_PORT;
 const EMAIL_SECURE = process.env.EMAIL_SECURE;
@@ -36,7 +37,7 @@ const sendEmail = async (to, subject, text, templateName, replacements, attachme
         });
 
         // Incluir el logo de la empresa como archivo adjunto embebido
-        const logoPath = path.join(__dirname, 'assets', 'logo.png');
+        const logoPath = path.join(__dirname, EMAIL_LOGO_PATH);
         attachments.push({
             filename: 'logo.png',
             path: logoPath,

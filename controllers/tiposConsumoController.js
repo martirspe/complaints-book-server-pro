@@ -1,5 +1,5 @@
 // Modelo de datos
-const TipoConsumo = require('../models/TipoConsumo');
+const { TipoConsumo } = require('../models');
 
 // Crear un nuevo tipo de consumo
 exports.createTipoConsumo = async (req, res) => {

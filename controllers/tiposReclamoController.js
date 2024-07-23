@@ -1,5 +1,5 @@
 // Modelo de datos
-const TipoReclamo = require('../models/TipoReclamo');
+const { TipoReclamo } = require('../models');
 
 // Crear un nuevo tipo de reclamo
 exports.createTipoReclamo = async (req, res) => {

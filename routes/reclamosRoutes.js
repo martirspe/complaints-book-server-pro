@@ -1,5 +1,5 @@
 const express = require('express');
-const upload = require('../config/multer');
+const { uploadClaim, uploadResolveClaim } = require('../controllers/uploadController');
 
 // Controlador de reclamos
 const {
@@ -15,7 +15,7 @@ const {
 const router = express.Router();
 
 // Crear un nuevo reclamo
-router.post('/reclamos', upload.single('a_adjunto'), createReclamo);
+router.post('/reclamos', uploadClaim, createReclamo);
 
 // Obtener todos los reclamos
 router.get('/reclamos', getReclamos);
@@ -24,7 +24,7 @@ router.get('/reclamos', getReclamos);
 router.get('/reclamos/:id', getReclamoById);
 
 // Actualizar un reclamo
-router.put('/reclamos/:id', upload.single('a_adjunto'), updateReclamo);
+router.put('/reclamos/:id', uploadClaim, updateReclamo);
 
 // Eliminar un reclamo
 router.delete('/reclamos/:id', deleteReclamo);
@@ -33,6 +33,6 @@ router.delete('/reclamos/:id', deleteReclamo);
 router.patch('/reclamos/:id/asignar', assignReclamo);
 
 // Resolver un reclamo
-router.patch('/reclamos/:id/resolver', upload.single('r_adjunto'), resolveReclamo);
+router.patch('/reclamos/:id/resolver', uploadResolveClaim, resolveReclamo);
 
 module.exports = router;

@@ -1,6 +1,5 @@
 // Modelos de datos
-const Tutor = require('../models/Tutor');
-const TipoDocumento = require('../models/TipoDocumento');
+const { Tutor, TipoDocumento } = require('../models');
 
 // Crear un nuevo tutor
 exports.createTutor = async (req, res) => {
@@ -72,7 +71,7 @@ exports.getTutorById = async (req, res) => {
     if (!tutor) {
       return res.status(404).json({ message: "Tutor no encontrado" });
     }
-    
+
     res.status(200).json(tutor);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -138,7 +137,7 @@ exports.deleteTutor = async (req, res) => {
     if (deleted) {
       return res.status(200).json({ message: "Tutor eliminado con éxito" });
     }
-    
+
     throw new Error("Tutor no encontrado");
   } catch (error) {
     res.status(500).json({ message: error.message });
