@@ -1,19 +1,19 @@
 const { DataTypes } = require('sequelize');
 
-// Configuración de DB
+// DB Configuration
 const { sequelize } = require('../config/db');
 
-const Usuario = sequelize.define('Usuario', {
+const User = sequelize.define('User', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
-  nombres: {
+  first_name: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  apellidos: {
+  last_name: {
     type: DataTypes.STRING,
     allowNull: false,
   },
@@ -29,13 +29,13 @@ const Usuario = sequelize.define('Usuario', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  rol: {
+  role: {
     type: DataTypes.ENUM('admin', 'staff'),
     allowNull: false,
   },
 }, {
-  tableName: 'usuarios',
   timestamps: false,
+  tableName: 'users',
 });
 
-module.exports = Usuario;
+module.exports = User;

@@ -1,21 +1,21 @@
 const { DataTypes } = require('sequelize');
 
-// Configuración de DB
+// DB Configuration
 const { sequelize } = require('../config/db');
 
-const TipoConsumo = sequelize.define('TipoConsumo', {
+const ClaimType = sequelize.define('ClaimType', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
-  nombre: {
+  name: {
     type: DataTypes.STRING,
     allowNull: false
   }
 }, {
   timestamps: false,
-  tableName: 'tipos_consumo'
+  tableName: 'claim_types'
 });
 
-module.exports = TipoConsumo;
+module.exports = ClaimType;

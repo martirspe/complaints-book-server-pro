@@ -1,14 +1,14 @@
 const express = require('express');
 
-// Controlador de carga de archivos
+// File upload handler
 const { uploadClaim, uploadLogo } = require('../controllers/uploadController');
 
 const router = express.Router();
 
-// Cargar un logo de forma independiente
+// Load a logo independently
 router.post('/upload/logo', uploadLogo);
 
-// Cargar un logo de forma independiente
+// Load a file independently
 router.post('/upload/claim', uploadClaim);
 
 module.exports = router;

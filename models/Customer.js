@@ -1,35 +1,35 @@
 const { DataTypes } = require('sequelize');
 
-// Configuración de DB
+// DB Configuration
 const { sequelize } = require('../config/db');
 
-// Modelo de datos
-const TipoDocumento = require('./TipoDocumento');
+// Data Model
+const DocumentType = require('./DocumentType');
 
-const Cliente = sequelize.define('Cliente', {
+const Customer = sequelize.define('Customer', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
-  t_documento_id: {
+  document_type_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: TipoDocumento,
+      model: DocumentType,
       key: 'id'
     }
   },
-  n_documento: {
+  document_number: {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true
   },
-  nombres: {
+  first_name: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  apellidos: {
+  last_name: {
     type: DataTypes.STRING,
     allowNull: false
   },
@@ -38,25 +38,25 @@ const Cliente = sequelize.define('Cliente', {
     allowNull: false,
     unique: true
   },
-  celular: {
+  phone: {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true
   },
-  direccion: {
+  address: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  m_edad: {
+  is_adult: {
     type: DataTypes.BOOLEAN,
     defaultValue: true
   }
 }, {
   timestamps: false,
-  tableName: 'clientes'
+  tableName: 'customers'
 });
 
-TipoDocumento.hasMany(Cliente, { foreignKey: 't_documento_id' });
-Cliente.belongsTo(TipoDocumento, { foreignKey: 't_documento_id' });
+DocumentType.hasMany(Customer, { foreignKey: 'document_type_id' });
+Customer.belongsTo(DocumentType, { foreignKey: 'document_type_id' });
 
-module.exports = Cliente;
+module.exports = Customer;

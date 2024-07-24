@@ -1,39 +1,39 @@
 const express = require('express');
 
-// Configuración de rutas
-const usuariosRoutes = require('./usuariosRoutes');
-const clientesRoutes = require('./clientesRoutes');
-const tutoresRoutes = require('./tutoresRoutes');
-const tiposDocumentoRoutes = require('./tiposDocumentoRoutes');
-const tiposConsumoRoutes = require('./tiposConsumoRoutes');
-const tiposReclamoRoutes = require('./tiposReclamoRoutes');
-const reclamosRoutes = require('./reclamosRoutes');
+// Route configuration
+const userRoutes = require('./userRoutes');
+const customerRoutes = require('./customerRoutes');
+const tutorRoutes = require('./tutorRoutes');
+const documentTypeRoutes = require('./documentTypeRoutes');
+const consumptionTypeRoutes = require('./consumptionTypeRoutes');
+const claimTypeRoutes = require('./claimTypeRoutes');
+const claimRoutes = require('./claimRoutes');
 const uploadRoutes = require('./uploadRoutes');
 
 const router = express.Router();
 
-// Rutas API de usuarios
-router.use('/api', usuariosRoutes);
+// User API routes
+router.use('/api', userRoutes);
 
-// Rutas API de clientes
-router.use('/api', clientesRoutes);
+// Client API routes
+router.use('/api', customerRoutes);
 
-// Rutas API de tutores
-router.use('/api', tutoresRoutes);
+// Tutor API routes
+router.use('/api', tutorRoutes);
 
-// Rutas API de tipos de documento
-router.use('/api', tiposDocumentoRoutes);
+// Document type API routes
+router.use('/api', documentTypeRoutes);
 
-// Rutas API de tipos de consumo
-router.use('/api', tiposConsumoRoutes);
+// Consumption type API routes
+router.use('/api', consumptionTypeRoutes);
 
-// Rutas API de tipos de reclamo
-router.use('/api', tiposReclamoRoutes);
+// Claim type API routes
+router.use('/api', claimTypeRoutes);
 
-// Rutas API de reclamos
-router.use('/api', reclamosRoutes);
+// Claims API routes
+router.use('/api', claimRoutes);
 
-// Rutas API de upload
+// Upload API routes
 router.use('/api', uploadRoutes);
 
 module.exports = router;

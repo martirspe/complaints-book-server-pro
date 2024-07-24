@@ -1,10 +1,10 @@
 const { DataTypes } = require('sequelize');
 
-// Configuración de DB
+// DB Configuration
 const { sequelize } = require('../config/db');
 
-// Modelo de datos
-const TipoDocumento = require('./TipoDocumento');
+// Data Model
+const DocumentType = require('./DocumentType');
 
 const Tutor = sequelize.define('Tutor', {
   id: {
@@ -12,24 +12,24 @@ const Tutor = sequelize.define('Tutor', {
     primaryKey: true,
     autoIncrement: true
   },
-  t_documento_id: {
+  document_type_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: TipoDocumento,
+      model: DocumentType,
       key: 'id'
     }
   },
-  n_documento: {
+  document_number: {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true
   },
-  nombres: {
+  first_name: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  apellidos: {
+  last_name: {
     type: DataTypes.STRING,
     allowNull: false
   },
@@ -38,17 +38,17 @@ const Tutor = sequelize.define('Tutor', {
     allowNull: false,
     unique: true
   },
-  celular: {
+  phone: {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true
   }
 }, {
   timestamps: false,
-  tableName: 'tutores'
+  tableName: 'tutors'
 });
 
-TipoDocumento.hasMany(Tutor, { foreignKey: 't_documento_id' });
-Tutor.belongsTo(TipoDocumento, { foreignKey: 't_documento_id' });
+DocumentType.hasMany(Tutor, { foreignKey: 'document_type_id' });
+Tutor.belongsTo(DocumentType, { foreignKey: 'document_type_id' });
 
 module.exports = Tutor;

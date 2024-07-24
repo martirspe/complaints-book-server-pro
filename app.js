@@ -1,32 +1,32 @@
-// Cargar variables de entorno desde un archivo .env
+// Load environment variables from a .env file
 require('dotenv').config();
 
-// Importar Express y la función connectDB desde el archivo de configuración de la base de datos
+// Import Express and connectDB function from database configuration file
 const express = require('express');
 const { connectDB } = require('./config/db');
 
-// Importar el archivo de rutas principal
+// Import the main routes file
 const routes = require('./routes/index');
 
-// Conectar a la base de datos al inicio de la aplicación
+// Connect to the database at application startup
 connectDB();
 
-// Crear una instancia de la aplicación Express
+// Create an instance of the Express application
 const app = express();
 
-// Middleware para parsear el cuerpo de las solicitudes como JSON
+// Middleware to parse the body of requests as JSON
 app.use(express.json());
 
-// Rutas: usar las rutas definidas en el archivo routes/index.js
+// Routes: use the routes defined in the routes/index.js file
 app.use('/', routes);
 
-// Manejar errores 404: responder con un mensaje JSON si la ruta solicitada no se encuentra
+// Handle 404 errors: respond with a JSON message if the requested path is not found
 app.use((req, res) => {
-    res.status(404).json({ message: 'Ruta no encontrada' });
+    res.status(404).json({ message: 'Route not found' });
 });
 
-// Iniciar el servidor Express en el puerto definido en las variables de entorno o en el puerto 3000 por defecto
+// Start the Express server on the port defined in the environment variables or on port 3000 by default
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Servidor corriendo en el puerto ${PORT}`);
+    console.log(`Server running on port: ${PORT}`);
 });

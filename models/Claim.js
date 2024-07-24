@@ -1,31 +1,31 @@
 const { DataTypes } = require('sequelize');
 
-// Configuración de DB
+// DB Configuration
 const { sequelize } = require('../config/db');
 
-// Modelos de datos
-const Usuario = require('./Usuario');
-const Cliente = require('./Cliente');
+// Data Models
+const User = require('./User');
+const Customer = require('./Customer');
 const Tutor = require('./Tutor');
-const TipoReclamo = require('./TipoReclamo');
-const TipoConsumo = require('./TipoConsumo');
+const ConsumptionType = require('./ConsumptionType');
+const ClaimType = require('./ClaimType');
 
-const Reclamo = sequelize.define('Reclamo', {
+const Claim = sequelize.define('Claim', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
-  codigo: {
+  code: {
     type: DataTypes.STRING,
     allowNull: true,
     unique: true
   },
-  cliente_id: {
+  customer_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: Cliente,
+      model: Customer,
       key: 'id'
     }
   },
@@ -37,118 +37,110 @@ const Reclamo = sequelize.define('Reclamo', {
       key: 'id'
     }
   },
-  t_reclamo_id: {
+  consumption_type_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: TipoReclamo,
+      model: ConsumptionType,
       key: 'id'
     }
   },
-  t_consumo_id: {
+  claim_type_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: TipoConsumo,
+      model: ClaimType,
       key: 'id'
     }
   },
-  n_pedido: {
+  order_number: {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
-  m_reclamado: {
+  claimed_amount: {
     type: DataTypes.DOUBLE,
     allowNull: false
   },
-  descripcion: {
+  description: {
     type: DataTypes.TEXT,
     allowNull: false
   },
-  detalle: {
+  detail: {
     type: DataTypes.TEXT,
     allowNull: false
   },
-  pedido: {
+  request: {
     type: DataTypes.TEXT,
     allowNull: false
   },
-  a_adjunto: {
+  attachment: {
     type: DataTypes.STRING,
     allowNull: true
   },
-  a_condiciones: {
+  terms_accepted: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: false
   },
-  u_asignado: {
+  assigned_user: {
     type: DataTypes.INTEGER,
     allowNull: true,
     references: {
-      model: Usuario,
+      model: User,
       key: 'id',
     },
   },
-  respuesta: {
+  response: {
     type: DataTypes.TEXT,
     allowNull: true,
   },
-  r_adjunto: {
+  response_attachment: {
     type: DataTypes.STRING,
     allowNull: true
   },
-  resuelto: {
+  resolved: {
     type: DataTypes.BOOLEAN,
     defaultValue: false
   },
-  estado: {
+  status: {
     type: DataTypes.TINYINT,
     allowNull: false,
     defaultValue: 1
   },
-  f_creacion: {
+  creation_date: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW
   },
-  f_asignacion: {
+  assignment_date: {
     type: DataTypes.DATE,
   },
-  f_respuesta: {
+  response_date: {
     type: DataTypes.DATE,
   },
-  f_actualizacion: {
+  update_date: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW
   }
 }, {
   timestamps: true,
-  createdAt: 'f_creacion',
-  updatedAt: 'f_actualizacion',
-  tableName: 'reclamos',
-  hooks: {
-    beforeUpdate: (reclamo, options) => {
-      reclamo.f_actualizacion = new Date();
-      if (reclamo.resuelto) {
-        reclamo.f_respuesta = new Date();
-      }
-    }
-  }
+  createdAt: 'creation_date',
+  updatedAt: 'update_date',
+  tableName: 'claims',
 });
 
-Cliente.hasMany(Reclamo, { foreignKey: 'cliente_id' });
-Reclamo.belongsTo(Cliente, { foreignKey: 'cliente_id' });
+Customer.hasMany(Claim, { foreignKey: 'customer_id' });
+Claim.belongsTo(Customer, { foreignKey: 'customer_id' });
 
-Tutor.hasMany(Reclamo, { foreignKey: 'tutor_id' });
-Reclamo.belongsTo(Tutor, { foreignKey: 'tutor_id' });
+Tutor.hasMany(Claim, { foreignKey: 'tutor_id' });
+Claim.belongsTo(Tutor, { foreignKey: 'tutor_id' });
 
-TipoReclamo.hasMany(Reclamo, { foreignKey: 't_reclamo_id' });
-Reclamo.belongsTo(TipoReclamo, { foreignKey: 't_reclamo_id' });
+ClaimType.hasMany(Claim, { foreignKey: 'claim_type_id' });
+Claim.belongsTo(ClaimType, { foreignKey: 'claim_type_id' });
 
-TipoConsumo.hasMany(Reclamo, { foreignKey: 't_consumo_id' });
-Reclamo.belongsTo(TipoConsumo, { foreignKey: 't_consumo_id' });
+ConsumptionType.hasMany(Claim, { foreignKey: 'consumption_type_id' });
+Claim.belongsTo(ConsumptionType, { foreignKey: 'consumption_type_id' });
 
-Usuario.hasMany(Reclamo, { foreignKey: 'u_asignado', as: 'reclamosAsignados' });
-Reclamo.belongsTo(Usuario, { foreignKey: 'u_asignado', as: 'asignadoUsuario' });
+User.hasMany(Claim, { foreignKey: 'assigned_user', as: 'assignedClaims' });
+Claim.belongsTo(User, { foreignKey: 'assigned_user', as: 'assignedUser' });
 
-module.exports = Reclamo;
+module.exports = Claim;

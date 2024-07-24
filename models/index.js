@@ -1,15 +1,18 @@
-const Cliente = require('./Cliente');
+// Data Models
+const User = require('./User');
+const Customer = require('./Customer');
 const Tutor = require('./Tutor');
-const TipoConsumo = require('./TipoConsumo');
-const TipoReclamo = require('./TipoReclamo');
-const Reclamo = require('./Reclamo');
-const Usuario = require('./Usuario');
+const DocumentType = require('./DocumentType');
+const ConsumptionType = require('./ConsumptionType');
+const ClaimType = require('./ClaimType');
+const Claim = require('./Claim');
 
 module.exports = {
-  Cliente,
+  User,
+  Customer,
   Tutor,
-  TipoConsumo,
-  TipoReclamo,
-  Reclamo,
-  Usuario
+  DocumentType,
+  ConsumptionType,
+  ClaimType,
+  Claim,
 };

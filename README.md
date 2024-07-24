@@ -68,7 +68,8 @@ DB_HOST=localhost
 DB_NAME=nombre_base_de_datos   
 DB_USER=usuario
 DB_PASSWORD=contraseña
-EMAIL_COMPANY= My Company
+EMAIL_COMPANY_NAME= My Company
+EMAIL_LOGO_PATH=assets/logos/logo.png
 EMAIL_HOST=mail.example.com
 EMAIL_PORT=465
 EMAIL_SECURE=true
@@ -91,113 +92,58 @@ El servidor se ejecutará en `http://localhost:3000`.
 
 ### API Endpoints
 
-#### Clientes
-
-##### Crear Cliente
-
-- **URL**: `/api/clientes`
-- **Método**: `POST`
-- **Cuerpo**:
-
-```json
-{
-  "t_documento_id": 1,
-  "n_documento": "12345678",
-  "nombres": "Juan",
-  "apellidos": "Perez",
-  "email": "juan.perez@example.com",
-  "celular": "987654321",
-  "direccion": "Avenida Las Américas 145",
-  "m_edad": true
-}
-```
-
-##### Obtener Todos los Clientes
-
-- **URL**: `/api/clientes`
-- **Método**: `GET`
-
-##### Obtener Cliente por ID
-
-- **URL**: `/api/clientes/:id`
-- **Método**: `GET`
-
-##### Actualizar Cliente
-
-- **URL**: `/api/clientes/:id`
-- **Método**: `PUT`
-- **Cuerpo**: (cualquier campo que desees actualizar)
-
-```json
-{
-  "t_documento_id": 1,
-  "n_documento": "34567891",
-  "nombres": "Ana",
-  "apellidos": "Díaz",
-  "email": "ana.diaz@test.com",
-  "celular": "927654322",
-  "direccion": "Calle Los Pinos 123",
-  "m_edad": true
-}
-```
-
-##### Eliminar Cliente
-
-- **URL**: `/api/clientes/:id`
-- **Método**: `DELETE`
-
 #### Usuarios
 
 ##### Crear Usuario
 
-- **URL**: `/api/usuarios`
+- **URL**: `/api/users`
 - **Método**: `POST`
 - **Cuerpo**:
 
 ```json
 {
-  "nombres": "Juan",
-  "apellidos": "Pérez",
+  "first_name": "Juan",
+  "last_name": "Pérez",
   "email": "juan.perez@example.com",
   "password": "password123",
-  "rol": "admin"
+  "role": "admin"
 }
 ```
 
 ##### Obtener Todos los Usuarios
 
-- **URL**: `/api/usuarios`
+- **URL**: `/api/users`
 - **Método**: `GET`
 
 ##### Obtener Usuario por ID
 
-- **URL**: `/api/usuarios/:id`
+- **URL**: `/api/users/:id`
 - **Método**: `GET`
 
 ##### Actualizar Usuario
 
-- **URL**: `/api/usuarios/:id`
+- **URL**: `/api/users/:id`
 - **Método**: `PUT`
 - **Cuerpo**: (cualquier campo que desees actualizar)
 
 ```json
 {
-  "nombres": "Juan",
-  "apellidos": "Pérez",
+  "first_name": "Juan",
+  "last_name": "Pérez",
   "email": "juan.perez@example.com",
   "password": "newpassword123",
-  "rol": "admin"
+  "role": "admin"
 }
 ```
 
 ##### Eliminar Usuario
 
-- **URL**: `/api/usuarios/:id`
+- **URL**: `/api/users/:id`
 - **Método**: `DELETE`
 
 ##### Login de Usuario
 
-- **URL**: `/api/usuarios/login`
+- **URL**: `/api/users/login`
 - **Método**: `POST`
 - **Cuerpo**:
 
@@ -208,214 +154,273 @@ El servidor se ejecutará en `http://localhost:3000`.
 }
 ```
 
-#### Tutores
 
-##### Crear Tutor
+#### Clientes
 
-- **URL**: `/api/tutores`
+##### Crear Cliente
+
+- **URL**: `/api/customers`
 - **Método**: `POST`
 - **Cuerpo**:
 
 ```json
 {
-  "t_documento_id": 1,
-  "n_documento": "12345679",
-  "nombres": "María",
-  "apellidos": "López",
-  "email": "maria.lopez@example.com",
-  "celular": "955432100"
+  "document_type_id": 1,
+  "document_number": "12345678",
+  "first_name": "Juan",
+  "last_name": "Perez",
+  "email": "juan.perez@example.com",
+  "phone": "987654321",
+  "address": "Avenida Las Américas 145",
+  "is_adult": true
 }
 ```
 
-##### Obtener Todos los Tutores
+##### Obtener Todos los Clientes
 
-- **URL**: `/api/tutores`
+- **URL**: `/api/customers`
 - **Método**: `GET`
 
-##### Obtener Tutor por ID
+##### Obtener Cliente por ID
 
-- **URL**: `/api/tutores/:id`
+- **URL**: `/api/customers/:id`
 - **Método**: `GET`
 
-##### Actualizar Tutor
+##### Actualizar Cliente
 
-- **URL**: `/api/tutores/:id`
+- **URL**: `/api/customers/:id`
 - **Método**: `PUT`
 - **Cuerpo**: (cualquier campo que desees actualizar)
 
 ```json
 {
-  "t_documento_id": 1,
-  "n_documento": "12345670",
-  "nombres": "Gimena",
-  "apellidos": "López",
+  "document_type_id": 1,
+  "document_number": "34567891",
+  "first_name": "Ana",
+  "last_name": "Díaz",
+  "email": "ana.diaz@test.com",
+  "phone": "927654322",
+  "address": "Calle Los Pinos 123",
+  "is_adult": true
+}
+```
+
+##### Eliminar Cliente
+
+- **URL**: `/api/customers/:id`
+- **Método**: `DELETE`
+
+
+#### Tutores
+
+##### Crear Tutor
+
+- **URL**: `/api/tutors`
+- **Método**: `POST`
+- **Cuerpo**:
+
+```json
+{
+  "document_type_id": 1,
+  "document_number": "12345679",
+  "first_name": "María",
+  "last_name": "López",
+  "email": "maria.lopez@example.com",
+  "phone": "955432100"
+}
+```
+
+##### Obtener Todos los Tutores
+
+- **URL**: `/api/tutors`
+- **Método**: `GET`
+
+##### Obtener Tutor por ID
+
+- **URL**: `/api/tutors/:id`
+- **Método**: `GET`
+
+##### Actualizar Tutor
+
+- **URL**: `/api/tutors/:id`
+- **Método**: `PUT`
+- **Cuerpo**: (cualquier campo que desees actualizar)
+
+```json
+{
+  "document_type_id": 1,
+  "document_number": "12345670",
+  "first_name": "Gimena",
+  "last_name": "López",
   "email": "gimena.lopez@example.com",
-  "celular": "955432100"
+  "phone": "955432100"
 }
 ```
 
 ##### Eliminar Tutor
 
-- **URL**: `/api/tutores/:id`
+- **URL**: `/api/tutors/:id`
 - **Método**: `DELETE`
 
 #### Tipos de Consumo
 
 ##### Crear Tipo de Consumo
 
-- **URL**: `/api/tipos-consumo`
+- **URL**: `/api/consumption_types`
 - **Método**: `POST`
 - **Cuerpo**:
 
 ```json
 {
-  "nombre": "Producto"
+  "name": "Producto"
 }
 ```
 
 ##### Obtener Todos los Tipos de Consumo
 
-- **URL**: `/api/tipos-consumo`
+- **URL**: `/api/consumption_types`
 - **Método**: `GET`
 
 ##### Obtener Tipo de Consumo por ID
 
-- **URL**: `/api/tipos-consumo/:id`
+- **URL**: `/api/consumption_types/:id`
 - **Método**: `GET`
 
 ##### Actualizar Tipo de Consumo
 
-- **URL**: `/api/tipos-consumo/:id`
+- **URL**: `/api/consumption_types/:id`
 - **Método**: `PUT`
 - **Cuerpo**: (cualquier campo que desees actualizar)
 
 ```json
 {
-  "nombre": "Servicio"
+  "name": "Servicio"
 }
 ```
 
 ##### Eliminar Tipo de Consumo
 
-- **URL**: `/api/tipos-consumo/:id`
+- **URL**: `/api/consumption_types/:id`
 - **Método**: `DELETE`
 
 #### Tipos de Reclamo
 
 ##### Crear Tipo de Reclamo
 
-- **URL**: `/api/tipos-reclamo`
+- **URL**: `/api/claim_types`
 - **Método**: `POST`
 - **Cuerpo**:
 
 ```json
 {
-  "nombre": "Queja"
+  "name": "Queja"
 }
 ```
 
 ##### Obtener Todos los Tipos de Reclamo
 
-- **URL**: `/api/tipos-reclamo`
+- **URL**: `/api/claim_types`
 - **Método**: `GET`
 
 ##### Obtener Tipo de Reclamo por ID
 
-- **URL**: `/api/tipos-reclamo/:id`
+- **URL**: `/api/claim_types/:id`
 - **Método**: `GET`
 
 ##### Actualizar Tipo de Reclamo
 
-- **URL**: `/api/tipos-reclamo/:id`
+- **URL**: `/api/claim_types/:id`
 - **Método**: `PUT`
 - **Cuerpo**: (cualquier campo que desees actualizar)
 
 ```json
 {
-  "nombre": "Reclamo"
+  "name": "Reclamo"
 }
 ```
 
 ##### Eliminar Tipo de Reclamo
 
-- **URL**: `/api/tipos-reclamo/:id`
+- **URL**: `/api/claim_types/:id`
 - **Método**: `DELETE`
 
 #### Reclamos
 
 ##### Crear Reclamo
 
-- **URL**: `/api/reclamos`
+- **URL**: `/api/claims`
 - **Método**: `POST`
 - **Cuerpo**:
 
 ```json
 {
-  "cliente_id": 1,
+  "customer_id": 1,
   "tutor_id": 1,
-  "t_consumo_id": 1,
-  "t_reclamo_id": 1,
-  "n_pedido": 12345,
-  "m_reclamado": 100.50,
-  "descripcion": "Descripción del reclamo",
-  "detalle": "Detalle del reclamo",
-  "pedido": "Pedido del cliente",
-  "a_adjunto": "ruta/al/archivo.pdf",
-  "a_condiciones": true
+  "consumption_type_id": 1,
+  "claim_type_id": 1,
+  "order_number": 12345,
+  "claimed_amount": 99.00,
+  "description": "Descripción del reclamo",
+  "detail": "Detalle del reclamo",
+  "request": "Pedido del cliente",
+  "attachment": "ruta/al/archivo.pdf",
+  "terms_accepted": true
 }
 ```
 
 ##### Obtener Todos los Reclamos
 
-- **URL**: `/api/reclamos`
+- **URL**: `/api/claims`
 - **Método**: `GET`
 
 ##### Obtener Reclamo por ID
 
-- **URL**: `/api/reclamos/:id`
+- **URL**: `/api/claims/:id`
 - **Método**: `GET`
 
 ##### Actualizar Reclamo
 
-- **URL**: `/api/reclamos/:id`
+- **URL**: `/api/claims/:id`
 - **Método**: `PUT`
 - **Cuerpo**: (cualquier campo que desees actualizar)
 
 ```json
 {
-  "m_reclamado": 200.00,
-  "descripcion": "Nueva descripción del reclamo"
+  "claimed_amount": 199.00,
+  "description": "Nueva descripción del reclamo",
+  "detail": "Nuevo detalle del reclamo",
+  "request": "Nuevo pedido del cliente"
 }
 ```
 
 ##### Asignar Reclamo
 
-- **URL**: `/api/reclamos/:id/asignar`
+- **URL**: `/api/claims/:id/assign`
 - **Método**: `POST`
 - **Cuerpo**:
 
 ```json
 {
-  "u_asignado": 1
+  "assigned_user": 1
 }
 ```
 
 ##### Resolver Reclamo
 
-- **URL**: `/api/reclamos/:id/resolver`
+- **URL**: `/api/claims/:id/resolve`
 - **Método**: `POST`
 - **Cuerpo**:
 
 ```json
 {
-  "respuesta": "Descripción de la resolución",
-  "resuelto": true
+  "response": "Descripción de la resolución",
+  "resolved": true
 }
 ```
 
 ##### Eliminar Reclamo
 
-- **URL**: `/api/reclamos/:id`
+- **URL**: `/api/claims/:id`
 - **Método**: `DELETE`
 
 ## Contribuir

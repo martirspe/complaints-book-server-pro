@@ -2,9 +2,9 @@ const multer = require('multer');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 
-// Crear función para configuración dinámica de multer
+// Create function for dynamic multer configuration
 const createUpload = (uploadPath, allowedTypes, errorMessage) => {
-  // Configuración de almacenamiento
+  // Storage configuration
   const storage = multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, uploadPath);
@@ -15,7 +15,7 @@ const createUpload = (uploadPath, allowedTypes, errorMessage) => {
     }
   });
 
-  // Filtro de archivos
+  // File filter
   const fileFilter = (req, file, cb) => {
     const mimetype = allowedTypes.test(file.mimetype);
     const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
@@ -26,7 +26,7 @@ const createUpload = (uploadPath, allowedTypes, errorMessage) => {
     cb(new Error(errorMessage));
   };
 
-  // Límite de tamaño de archivo (en bytes)
+  // File size limit (in bytes)
   const limits = {
     fileSize: 1024 * 1024 * 5 // 5 MB
   };
