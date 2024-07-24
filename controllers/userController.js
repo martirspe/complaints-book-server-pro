@@ -4,15 +4,18 @@ const { User } = require('../models');
 // Bcrypt library for JWT
 const bcrypt = require('bcrypt');
 
+// Import the JWT generate utility
+const { generateJWT } = require('../utils/jwtUtils');
+
 // Create a new user
 exports.createUser = async (req, res) => {
   try {
-    const { first_name, last_name, email, password, role } = req.body;
+    const { first_name, last_name, email, password, license_type, license_expiration_date, role } = req.body;
 
-    // Verify if the user already exists based on email
-    const existingEmail = await User.findOne({ where: { email } });
-    if (existingEmail) {
-      return res.status(400).json({ message: 'Email is already in use' });
+    // Check if user already exists
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser) {
+      return res.status(400).json({ message: 'User with this email already exists' });
     }
 
     // Hash the password before saving the user
@@ -23,7 +26,9 @@ exports.createUser = async (req, res) => {
       last_name,
       email,
       password: hashedPassword,
-      role,
+      license_type,
+      license_expiration_date,
+      role
     });
 
     res.status(201).json(user);
@@ -138,18 +143,3 @@ exports.loginUser = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
-// Function to generate a JWT
-function generateJWT(user) {
-  const jwt = require('jsonwebtoken');
-  const secret = process.env.JWT_SECRET || 'your_jwt_secret';
-  return jwt.sign(
-    {
-      id: user.id,
-      email: user.email,
-      role: user.role,
-    },
-    secret,
-    { expiresIn: '1h' }
-  );
-}

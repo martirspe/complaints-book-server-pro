@@ -14,5 +14,5 @@ module.exports = {
   DocumentType,
   ConsumptionType,
   ClaimType,
-  Claim,
+  Claim
 };

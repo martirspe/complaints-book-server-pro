@@ -8,6 +8,9 @@ const { connectDB } = require('./config/db');
 // Import the main routes file
 const routes = require('./routes/index');
 
+// Import middleware for error handling
+const { errorMiddleware } = require('./middlewares');
+
 // Connect to the database at application startup
 connectDB();
 
@@ -16,6 +19,9 @@ const app = express();
 
 // Middleware to parse the body of requests as JSON
 app.use(express.json());
+
+// Middleware for error handling
+app.use(errorMiddleware);
 
 // Routes: use the routes defined in the routes/index.js file
 app.use('/', routes);

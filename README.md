@@ -16,11 +16,13 @@ Este proyecto es una API REST para la gestión de un Libro de Reclamaciones, dis
 - Sequelize
 - MySQL
 - Nodemailer
+- Redis
 
 ## Requisitos
 
 - Node.js (versión 14 o superior)
 - MySQL
+- Redis
 
 ## Instalación
 
@@ -102,10 +104,12 @@ El servidor se ejecutará en `http://localhost:3000`.
 
 ```json
 {
-  "first_name": "Juan",
-  "last_name": "Pérez",
-  "email": "juan.perez@example.com",
+  "first_name": "John",
+  "last_name": "Doe",
+  "email": "john.doe@example.com",
   "password": "password123",
+  "license_type": "premium",
+  "license_expiration_date": "2025-12-31T23:59:59.000Z",
   "role": "admin"
 }
 ```
@@ -132,7 +136,9 @@ El servidor se ejecutará en `http://localhost:3000`.
   "last_name": "Pérez",
   "email": "juan.perez@example.com",
   "password": "newpassword123",
-  "role": "admin"
+  "license_type": "basic",
+  "license_expiration_date": "2025-12-31T23:59:59.000Z",
+  "role": "staff"
 }
 ```
 
@@ -149,11 +155,10 @@ El servidor se ejecutará en `http://localhost:3000`.
 
 ```json
 {
-  "email": "juan.perez@example.com",
+  "email": "john.doe@example.com",
   "password": "password123"
 }
 ```
-
 
 #### Clientes
 
@@ -422,6 +427,67 @@ El servidor se ejecutará en `http://localhost:3000`.
 
 - **URL**: `/api/claims/:id`
 - **Método**: `DELETE`
+
+#### Licencias
+
+## Verificación de Licencia
+
+`GET /api/license`
+
+### Headers
+
+- `Authorization`: Bearer `<token>`
+
+### Respuesta
+
+- **200 OK**: Su licencia está activa.
+  ```json
+  {
+    "licenseValid": true,
+    "licenseType": "premium",
+    "expirationDate": "2025-07-24T00:00:00.000Z",
+    "message": "Your license is active."
+  }
+  ```
+
+- **401 Unauthorized**: Acceso denegado. No se proporcionó ningún token.
+  ```json
+  {
+    "message": "Access denied. No token provided."
+  }
+  ```
+
+- **403 Forbidden**: Su licencia ha expirado.
+  ```json
+  {
+    "licenseValid": false,
+    "licenseType": "premium",
+    "expirationDate": "2023-07-24T00:00:00.000Z",
+    "message": "Your license has expired."
+  }
+  ```
+
+- **404 Not Found**: No se encontró ninguna licencia para el usuario.
+  ```json
+  {
+    "message": "No license was found for the user."
+  }
+  ```
+
+### Ejemplo de Uso con Postman
+
+1. Abre Postman y selecciona el método `GET`.
+2. Introduce la URL `http://yourdomain.com/api/license`.
+3. En la pestaña `Headers`, añade un nuevo header:
+   - Key: `Authorization`
+   - Value: `Bearer <token>`
+4. Haz clic en `Send`.
+
+### Notas
+
+- Asegúrate de que el servidor Redis esté corriendo si estás utilizando el middleware de cache.
+- El token JWT debe ser válido y no haber expirado para poder acceder al endpoint.
+- Este endpoint es crucial para garantizar la seguridad y el control de acceso en la aplicación.
 
 ## Contribuir
 

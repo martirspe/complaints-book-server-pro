@@ -29,6 +29,14 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  license_type: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  license_expiration_date: {
+    type: DataTypes.DATE,
+    allowNull: true
+  },
   role: {
     type: DataTypes.ENUM('admin', 'staff'),
     allowNull: false,

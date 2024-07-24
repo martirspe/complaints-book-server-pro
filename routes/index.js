@@ -9,6 +9,7 @@ const consumptionTypeRoutes = require('./consumptionTypeRoutes');
 const claimTypeRoutes = require('./claimTypeRoutes');
 const claimRoutes = require('./claimRoutes');
 const uploadRoutes = require('./uploadRoutes');
+const licenseRoutes = require('./licenseRoutes');
 
 const router = express.Router();
 
@@ -35,5 +36,8 @@ router.use('/api', claimRoutes);
 
 // Upload API routes
 router.use('/api', uploadRoutes);
+
+// License verification API
+router.use('/api', licenseRoutes);
 
 module.exports = router;
