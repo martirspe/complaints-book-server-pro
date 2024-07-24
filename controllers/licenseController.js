@@ -1,5 +1,7 @@
-const { User } = require('../models/');
 const redisClient = require('../config/redis');
+
+// Data Model
+const { User } = require('../models/');
 
 exports.checkLicense = async (req, res) => {
     try {

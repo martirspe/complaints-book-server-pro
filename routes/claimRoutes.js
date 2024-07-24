@@ -1,4 +1,6 @@
 const express = require('express');
+
+// Upload controller
 const { uploadClaim, uploadResolveClaim } = require('../controllers/uploadController');
 
 // Claims controller

@@ -430,15 +430,15 @@ El servidor se ejecutará en `http://localhost:3000`.
 
 #### Licencias
 
-## Verificación de Licencia
+##### Verificación de Licencia
 
 `GET /api/license`
 
-### Headers
+##### Headers
 
 - `Authorization`: Bearer `<token>`
 
-### Respuesta
+##### Respuesta
 
 - **200 OK**: Su licencia está activa.
   ```json
@@ -474,7 +474,7 @@ El servidor se ejecutará en `http://localhost:3000`.
   }
   ```
 
-### Ejemplo de Uso con Postman
+##### Ejemplo de Uso con Postman
 
 1. Abre Postman y selecciona el método `GET`.
 2. Introduce la URL `http://yourdomain.com/api/license`.
@@ -482,12 +482,6 @@ El servidor se ejecutará en `http://localhost:3000`.
    - Key: `Authorization`
    - Value: `Bearer <token>`
 4. Haz clic en `Send`.
-
-### Notas
-
-- Asegúrate de que el servidor Redis esté corriendo si estás utilizando el middleware de cache.
-- El token JWT debe ser válido y no haber expirado para poder acceder al endpoint.
-- Este endpoint es crucial para garantizar la seguridad y el control de acceso en la aplicación.
 
 ## Contribuir
 
