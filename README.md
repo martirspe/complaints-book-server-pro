@@ -4,10 +4,11 @@ Este proyecto es una API REST para la gestión de un Libro de Reclamaciones, dis
 
 ## Características
 
-- Crear, actualizar y eliminar reclamos
-- Asignar y resolver reclamos
-- Enviar notificaciones por correo electrónico al crear, asignar y resolver reclamos
-- Integración con base de datos MySQL
+- **Crear, actualizar y eliminar reclamos**: Permite gestionar los reclamos con facilidad.
+- **Asignar y resolver reclamos**: Funcionalidades para asignar reclamos a usuarios específicos y marcar reclamos como resueltos.
+- **Enviar notificaciones por correo electrónico**: Envía notificaciones automáticas al crear, actualizar, asignar y resolver reclamos para mantener a los usuarios informados.
+- **Integración con base de datos MySQL**: Almacena y gestiona los datos de los reclamos en una base de datos MySQL.
+- **Verificación de licencias**: Verifica si la licencia adquirida por un usuario está activa y el tipo de licencia, asegurando que solo los usuarios con licencias válidas puedan acceder a ciertas funcionalidades. Si la licencia ha expirado, se muestra un mensaje adecuado.
 
 ## Tecnologías
 

@@ -1,7 +1,7 @@
 const express = require('express');
 
-// Upload controller
-const { uploadClaim, uploadResolveClaim } = require('../controllers/uploadController');
+// Upload middleware
+const { uploadClaim, uploadResolveClaim } = require('../middlewares/uploadMiddleware');
 
 // Claims controller
 const {

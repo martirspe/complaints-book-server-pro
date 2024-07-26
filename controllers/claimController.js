@@ -198,6 +198,7 @@ exports.assignClaim = async (req, res) => {
     }
 
     claim.assigned_user = assigned_user;
+    claim.assignment_date = new Date(); // Save the assignment date
     await claim.save();
 
     // Prepare data for email sending
@@ -205,7 +206,7 @@ exports.assignClaim = async (req, res) => {
       ...prepareEmailData(claim),
       assignedName: user.first_name,
       creationDate: formatDate(claim.creation_date),
-      assignmentDate: formatDate(new Date())
+      assignmentDate: formatDate(claim.assignment_date)
     };
 
     // Send email when assigning a claim
@@ -221,7 +222,7 @@ exports.assignClaim = async (req, res) => {
       message: `The claim has been assigned to: ${user.first_name} ${user.last_name}`,
       assignedUser: {
         id: user.id,
-        name: user.first_name
+        name: `${user.first_name} ${user.last_name}`
       }
     });
   } catch (error) {
