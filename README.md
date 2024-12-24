@@ -192,6 +192,11 @@ El servidor se ejecutará en `http://localhost:3000`.
 - **URL**: `/api/customers/:id`
 - **Método**: `GET`
 
+##### Obtener Cliente por Número de Documento
+
+- **URL**: `/api/customers/document/:document_number`
+- **Método**: `GET`
+
 ##### Actualizar Cliente
 
 - **URL**: `/api/customers/:id`
@@ -244,6 +249,11 @@ El servidor se ejecutará en `http://localhost:3000`.
 ##### Obtener Tutor por ID
 
 - **URL**: `/api/tutors/:id`
+- **Método**: `GET`
+
+##### Obtener Tutor por Número de Documento
+
+- **URL**: `/api/tutors/document/:document_number`
 - **Método**: `GET`
 
 ##### Actualizar Tutor
@@ -319,7 +329,8 @@ El servidor se ejecutará en `http://localhost:3000`.
 
 ```json
 {
-  "name": "Queja"
+  "name": "Queja",
+  "description": "Descripción del tipo de reclamo"
 }
 ```
 
@@ -341,7 +352,8 @@ El servidor se ejecutará en `http://localhost:3000`.
 
 ```json
 {
-  "name": "Reclamo"
+  "name": "Reclamo",
+  "description": "Nueva descripción del tipo de reclamo"
 }
 ```
 

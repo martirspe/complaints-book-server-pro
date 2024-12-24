@@ -55,7 +55,7 @@ const Claim = sequelize.define('Claim', {
   },
   order_number: {
     type: DataTypes.INTEGER,
-    allowNull: true,
+    allowNull: true
   },
   claimed_amount: {
     type: DataTypes.DOUBLE,

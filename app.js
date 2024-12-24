@@ -5,6 +5,9 @@ require('dotenv').config();
 const express = require('express');
 const { connectDB } = require('./config/db');
 
+// Import CORS Policy
+const cors = require('cors');
+
 // Import the main routes file
 const routes = require('./routes/index');
 
@@ -16,6 +19,26 @@ connectDB();
 
 // Create an instance of the Express application
 const app = express();
+
+// List of allowed domains
+const allowedOrigins = process.env.ALLOWED_ORIGINS.split(',');
+
+// Custom CORS configuration
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS bloqueado: Dominio no permitido.'));
+    }
+  },
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+};
+
+// Apply CORS with restrictive settings
+app.use(cors(corsOptions));
 
 // Middleware to parse the body of requests as JSON
 app.use(express.json());

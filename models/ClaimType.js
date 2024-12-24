@@ -12,6 +12,10 @@ const ClaimType = sequelize.define('ClaimType', {
   name: {
     type: DataTypes.STRING,
     allowNull: false
+  },
+  description: {
+    type: DataTypes.TEXT,
+    allowNull: true
   }
 }, {
   timestamps: false,

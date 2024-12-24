@@ -21,7 +21,7 @@ const Customer = sequelize.define('Customer', {
     }
   },
   document_number: {
-    type: DataTypes.STRING,
+    type: DataTypes.INTEGER,
     allowNull: false,
     unique: true
   },

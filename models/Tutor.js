@@ -21,7 +21,7 @@ const Tutor = sequelize.define('Tutor', {
     }
   },
   document_number: {
-    type: DataTypes.STRING,
+    type: DataTypes.INTEGER,
     allowNull: false,
     unique: true
   },

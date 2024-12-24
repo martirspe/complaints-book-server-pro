@@ -56,6 +56,26 @@ exports.getCustomers = async (req, res) => {
   }
 };
 
+// Get a client by document number
+exports.getCustomerByDocument = async (req, res) => {
+  try {
+    const { document_number } = req.params;
+
+    const customer = await Customer.findOne({
+      where: { document_number },
+      include: [{ model: DocumentType }]
+    });
+
+    if (!customer) {
+      return res.status(404).json({ message: "Customer not found" });
+    }
+
+    res.status(200).json(customer);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // Get a customer by ID
 exports.getCustomerById = async (req, res) => {
   try {

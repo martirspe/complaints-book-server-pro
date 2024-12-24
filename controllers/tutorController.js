@@ -56,6 +56,26 @@ exports.getTutors = async (req, res) => {
   }
 };
 
+// Get a tutor by document number
+exports.getTutorByDocument = async (req, res) => {
+  try {
+    const { document_number } = req.params;
+
+    const tutor = await Tutor.findOne({
+      where: { document_number },
+      include: [{ model: DocumentType }]
+    });
+
+    if (!tutor) {
+      return res.status(404).json({ message: "Tutor not found" });
+    }
+
+    res.status(200).json(tutor);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // Get a tutor by ID
 exports.getTutorById = async (req, res) => {
   try {
