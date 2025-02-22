@@ -47,9 +47,9 @@ const Customer = sequelize.define('Customer', {
     type: DataTypes.STRING,
     allowNull: false
   },
-  is_adult: {
+  is_younger: {
     type: DataTypes.BOOLEAN,
-    defaultValue: true
+    defaultValue: false
   }
 }, {
   timestamps: false,

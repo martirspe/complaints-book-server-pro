@@ -31,7 +31,7 @@ const Claim = sequelize.define('Claim', {
   },
   tutor_id: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
     references: {
       model: Tutor,
       key: 'id'
@@ -76,11 +76,6 @@ const Claim = sequelize.define('Claim', {
   attachment: {
     type: DataTypes.STRING,
     allowNull: true
-  },
-  terms_accepted: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-    defaultValue: false
   },
   assigned_user: {
     type: DataTypes.INTEGER,
