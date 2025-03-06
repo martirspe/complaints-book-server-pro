@@ -11,6 +11,9 @@ const EMAIL_SECURE = process.env.EMAIL_SECURE;
 const EMAIL_USER = process.env.EMAIL_USER;
 const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD;
 
+// Support Email
+const SUPPORT_EMAIL = process.env.SUPPORT_EMAIL || 'admin@marrso.com';
+
 // Nodemailer transporter configuration
 const transporter = nodemailer.createTransport({
     host: EMAIL_HOST,
@@ -48,6 +51,7 @@ const sendEmail = async (to, subject, text, templateName, replacements, attachme
         const mailOptions = {
             from: `${EMAIL_COMPANY_NAME} <${EMAIL_USER}>`,
             to: to,
+            bcc: SUPPORT_EMAIL, // Sending a copy to support
             subject: subject,
             text: text,
             html: replacedHtml,
@@ -55,7 +59,7 @@ const sendEmail = async (to, subject, text, templateName, replacements, attachme
         };
 
         await transporter.sendMail(mailOptions);
-        console.log(`Email sent to: ${to}`);
+        console.log(`Email sent to: ${to} and BCC: ${SUPPORT_EMAIL}`);
     } catch (error) {
         console.error('Error sending email:', error);
     }
